@@ -2,7 +2,16 @@
 SELECT DATABASE();
 USE supervisor_hunting;
 
--- 2.2.1 User Table
+-- 2.2.1 Program Table
+CREATE TABLE Program (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL UNIQUE,
+    description VARCHAR(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- 2.2.2 User Table
 CREATE TABLE User (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL UNIQUE,
@@ -15,16 +24,19 @@ CREATE TABLE User (
     CONSTRAINT FK_User_Program FOREIGN KEY (program_id) REFERENCES Program(id) ON DELETE SET NULL
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- 2.2.2 Program Table
-CREATE TABLE Program (
+-- 2.2.3 LecturerQuota Table
+CREATE TABLE LecturerQuota (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL UNIQUE,
-    description VARCHAR(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
+    semester VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    lecturer_id INT NOT NULL,
+    total_quota INT NOT NULL,
+    remaining_quota INT DEFAULT 0 NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT FK_Quota_Lecturer FOREIGN KEY (lecturer_id) REFERENCES User(id) ON DELETE CASCADE
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- 2.2.3 ResearchGroup Table (Removed program_id)
+-- 2.2.4 ResearchGroup Table
 CREATE TABLE ResearchGroup (
     id INT AUTO_INCREMENT PRIMARY KEY,
     group_name VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL UNIQUE,
@@ -35,19 +47,19 @@ CREATE TABLE ResearchGroup (
     CONSTRAINT FK_ResearchGroup_User FOREIGN KEY (lecturer_id) REFERENCES User(id) ON DELETE SET NULL
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- 2.2.4 Proposal Table
+-- 2.2.5 Proposal Table
 CREATE TABLE Proposal (
     id INT AUTO_INCREMENT PRIMARY KEY,
     lecturer_id INT NOT NULL,
     proposal_title VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-    proposal_description TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
+    proposal_description TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     status ENUM('Available', 'Taken') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'Available' NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     CONSTRAINT FK_Proposal_Lecturer FOREIGN KEY (lecturer_id) REFERENCES User(id) ON DELETE CASCADE
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- 2.2.5 StudentApplication Table (Added lecturer_quota_id)
+-- 2.2.6 StudentApplication Table
 CREATE TABLE StudentApplication (
     id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT NOT NULL,
@@ -55,7 +67,9 @@ CREATE TABLE StudentApplication (
     lecturer_quota_id INT NOT NULL,
     proposal_id INT NULL,
     proposal_title VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-    student_title VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
+    proposal_description TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    student_title VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    student_description TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
     status ENUM('Pending', 'Accepted', 'Rejected') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'Pending' NOT NULL,
     decision_date TIMESTAMP NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -66,25 +80,13 @@ CREATE TABLE StudentApplication (
     CONSTRAINT FK_Application_Quota FOREIGN KEY (lecturer_quota_id) REFERENCES LecturerQuota(id) ON DELETE CASCADE
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- 2.2.6 SupervisorHuntingPeriod Table
+-- 2.2.7 SupervisorHuntingPeriod Table
 CREATE TABLE SupervisorHuntingPeriod (
     id INT AUTO_INCREMENT PRIMARY KEY,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- 2.2.7 LecturerQuota Table
-CREATE TABLE LecturerQuota (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    semester VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-    lecturer_id INT NOT NULL,
-    total_quota INT NOT NULL,
-    remaining_quota INT DEFAULT 0 NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    CONSTRAINT FK_Quota_Lecturer FOREIGN KEY (lecturer_id) REFERENCES User(id) ON DELETE CASCADE
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- 2.2.8 Notifications Table
@@ -114,13 +116,11 @@ CREATE TABLE Appointment (
     CONSTRAINT FK_Appointment_Lecturer FOREIGN KEY (lecturer_id) REFERENCES User(id) ON DELETE CASCADE
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-
 -- 2.2.10 Timetable Table
 CREATE TABLE Timetable (
     id INT AUTO_INCREMENT PRIMARY KEY,
     lecturer_id INT NOT NULL,
     file_path VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-    semester VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     CONSTRAINT FK_Timetable_Lecturer FOREIGN KEY (lecturer_id) REFERENCES User(id) ON DELETE CASCADE
