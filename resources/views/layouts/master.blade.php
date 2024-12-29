@@ -34,9 +34,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white text-center py-4 fixed bottom-0 left-64 right-0">
-        <p>&copy; {{ date('Y') }} FYP Hunt. All rights reserved.</p>
-    </footer>
+    @include('partials.footer')
 </body>
 
 </html>

@@ -1,3 +1,3 @@
-<footer class="bg-white text-gray-400 text-center py-4">
-    <p>&copy; {{ date('Y') }} Limmie Digital Solutions. All rights reserved.</p>
+<footer class="bg-gray-50 text-black text-center py-4 fixed bottom-0 left-64 right-0">
+    <p>&copy; {{ date('Y') }} FYP Hunt. All rights reserved.</p>
 </footer>
