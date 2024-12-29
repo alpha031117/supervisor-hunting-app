@@ -11,34 +11,32 @@
     @vite('resources/css/app.css')
 </head>
 
-<body class="bg-gray-50">
-    <div class="flex h-screen pt-5 px-5">
-        <!-- Sidebar -->
-        @include('partials.sidebar')
+<body class="bg-gray-50 h-screen flex">
+    <!-- Sidebar -->
+    @include('partials.sidebar')
 
-        <!-- Main Content -->
-        <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50">
-            <!-- Header -->
-            @include('partials.header')
+    <!-- Main Content -->
+    <main class="flex-1 bg-gray-50">
+        @include('partials.header')
 
-            <!-- Page Content -->
-            <div class="p-6">
-                {{-- Breadcrumb --}}
-                <nav class="text-gray-500" aria-label="Breadcrumb">
-                    <ol class="flex items-center space-x-2">
-                        @yield('breadcrumbs')
-                    </ol>
-                </nav>
-                <div class="mt-5">
-                    @yield('content')
-                </div>
+        <!-- Page Content -->
+        <div class="p-6">
+            {{-- Breadcrumb --}}
+            <nav class="text-gray-500" aria-label="Breadcrumb">
+                <ol class="flex items-center space-x-2">
+                    @yield('breadcrumbs')
+                </ol>
+            </nav>
+            <div class="mt-5">
+                @yield('content')
             </div>
-        </main>
+        </div>
+    </main>
 
-    </div>
-
-    {{-- Footer --}}
-    @include('partials.footer')
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white text-center py-4 fixed bottom-0 left-64 right-0">
+        <p>&copy; {{ date('Y') }} FYP Hunt. All rights reserved.</p>
+    </footer>
 </body>
 
 </html>

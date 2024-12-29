@@ -1,7 +1,7 @@
-<nav class="bg-white shadow-sm">
+<nav class="bg-white">
     <div class="px-4 py-3 flex justify-between items-center">
         <div class="flex items-center">
-            <h1 class="text-3xl font-bold">
+            <h1 class="text-2xl font-semibold">
                 @yield('page', 'FYP Hunt')
             </h1>
         </div>
