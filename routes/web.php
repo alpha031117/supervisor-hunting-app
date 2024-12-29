@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ManageUser\AuthenticatedSessionController;
+use App\Http\Controllers\ManageUser\ManageUserController;
 use Illuminate\Support\Facades\Route;
 
 // Create route here
@@ -31,3 +32,13 @@ Route::get('/success-reset-password', function () {
     return view('ManageUser.reset-successful');
 })->middleware('guest')
     ->name('success-reset-password');
+
+// User List
+Route::get('/user-list', [ManageUserController::class, 'displayUserList'])
+    // ->middleware('auth')
+    ->name('user-list');
+
+// User Report
+Route::get('/user-report', [ManageUserController::class, 'displayUserReport'])
+    ->middleware('auth')
+    ->name('user-report');
