@@ -1,47 +1,43 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+@extends('layouts.login_master')
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+@section('content')
+<div class="flex flex-col md:flex-row bg-white rounded-md overflow-hidden w-full max-w-5xl md:gap-12">
+    <!-- Left Illustration Section -->
+    <div class="w-full md:w-1/2 flex items-center justify-center">
+        <img src="{{ asset('images/login_illustration.gif') }}" alt="Illustration" class="w-full h-auto">
+    </div>
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-            </label>
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+    <!-- Login Form Section -->
+    <div class="w-full md:w-1/2 p-8 flex flex-col justify-center border border-color rounded-lg">
+        <div class="text-center mb-6">
+            <div class="flex items-center justify-center space-x-4">
+                <!-- Icon -->
+                <img src="{{ asset('images/icon.png') }}" alt="Logo" class="w-16 h-auto">
+                <h1 class="text-2xl font-bold">FYP Hunt</h1>
+            </div>
+        </div>        
+        <form method="POST" action="{{ route('login') }}" class="space-y-6">
+            @csrf
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email" id="email" name="email" value="charlenereed@umpsa.edu.com" 
+                       class="w-full mt-1 px-2 py-2 border-b border-gray-300 focus:outline-none focus:ring-0 focus:border-blue-500" required>
+            </div>
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                <input type="password" id="password" name="password" value="********" 
+                       class="w-full mt-1 px-2 py-2 border-b border-gray-300 focus:outline-none focus:ring-0 focus:border-blue-500" required>
+            </div>
+            <div class="text-sm text-right text-gray-600">
+                <p>Don’t Have Account?</p>
+                <span>
+                    <a href="{{ route('reset-password')}}" class="text-blue-600 hover:underline">Register Here</a>
+                </span>
+            </div>
+            <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                Login Now
+            </button>
+        </form>
+    </div>
+</div>
+@endsection
