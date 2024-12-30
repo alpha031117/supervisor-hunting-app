@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ManageUser\AuthenticatedSessionController;
 use App\Http\Controllers\ManageUser\ManageUserController;
+use App\Http\Controllers\ManageTimeframeAndQuota\TimeframeController;
 use Illuminate\Support\Facades\Route;
 
 // Create route here
@@ -42,3 +43,7 @@ Route::get('/user-list', [ManageUserController::class, 'displayUserList'])
 Route::get('/user-report', [ManageUserController::class, 'displayUserReport'])
     ->middleware('auth')
     ->name('user-report');
+
+// Set Timeframe
+Route::get('/set-timeframe', [TimeframeController::class, 'setTimeframe'])
+    ->name('set-timeframe');
