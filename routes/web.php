@@ -36,9 +36,10 @@ Route::get('/success-reset-password', function () {
 // User List
 Route::get('/user-list', [ManageUserController::class, 'displayUserList'])
     // ->middleware('auth')
-    ->name('user-list');
+    ->name('admin.user-list');
 
 // User Report
 Route::get('/user-report', [ManageUserController::class, 'displayUserReport'])
-    ->middleware('auth')
-    ->name('user-report');
+    // ->middleware('auth')
+    ->name('admin.user-report');
+Route::post('/admin/filter-data', [ManageUserController::class, 'filterData'])->name('admin.filter-data');
