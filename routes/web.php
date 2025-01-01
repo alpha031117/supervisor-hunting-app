@@ -25,6 +25,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/create-user-bulk', [ManageUserController::class, 'createUserBulk'])
         ->name('admin.create-user-bulk');
 
+        // Update Research Group
+        Route::post('/update-research-group', [ManageUserController::class, 'updateResearchGroup'])
+        ->name('admin.update-research-group');
+        
         // User Report
         Route::get('/user-report', [ManageUserController::class, 'displayUserReport'])
         ->name('admin.user-report');

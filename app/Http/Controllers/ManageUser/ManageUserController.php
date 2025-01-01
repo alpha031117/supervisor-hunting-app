@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
 use App\Models\Program;
+use App\Models\ResearchGroup;
 
 class ManageUserController extends Controller
 {
@@ -32,7 +33,12 @@ class ManageUserController extends Controller
             ['path' => LengthAwarePaginator::resolveCurrentPath()]
         );
 
-        return view('ManageUser.user-list', ['users' => $paginatedItems]);
+        // Get all research group
+        $researchGroup = ResearchGroup::all();
+        return view('ManageUser.user-list', [
+            'users' => $paginatedItems,
+            'researchGroup' => $researchGroup
+        ]);
     }
 
     // Create user with bulk data by using csv file
@@ -104,6 +110,36 @@ class ManageUserController extends Controller
             Log::error('Bulk User Creation Error: ' . $e->getMessage());
             return redirect()->route('admin.user-list')->with('error', 'Failed to create users. Please try again.');
         }
+    }
+
+    // Update Research Group
+    public function updateResearchGroup(Request $request)
+    {
+        Log::info('Update Research Group Request Received');
+
+        $userId = $request->input('user_id');
+        $researchGroupId = $request->input('research-group');
+
+        Log::info('User ID: ' . $userId);
+        Log::info('Research Group ID: ' . $researchGroupId);
+    
+        // Find the user
+        $user = User::find($userId);
+        if (!$user) {
+            return redirect()->route('admin.user-list')->with('error', "User not found.");
+        }
+    
+        // Find the research group
+        $researchGroup = ResearchGroup::find($researchGroupId);
+        if (!$researchGroup) {
+            return redirect()->route('admin.user-list')->with('error', "Research group not found.");
+        }
+    
+        // Update the user's research group
+        $user->research_group_id = $researchGroupId;
+        $user->save();
+    
+        return redirect()->route('admin.user-list')->with('success', "Research group had been updated successfully.");
     }
 
     // Display the Coordinator User Report
