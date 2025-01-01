@@ -35,6 +35,9 @@ Route::middleware('auth')->group(function () {
 
         Route::post('/admin/filter-data', [ManageUserController::class, 'filterData'])
         ->name('admin.filter-data');
+
+        Route::post('/admin/filter-data-all', [ManageUserController::class, 'displayFilteredUser'])
+        ->name('admin.filter-data-all');
     });
 
     // Lecturer
