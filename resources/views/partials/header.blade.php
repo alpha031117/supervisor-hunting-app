@@ -31,7 +31,7 @@
                     </path>
                 </svg>
             </button>
-            <img src="{{ auth()->user()->avatar ?? '/default-avatar.jpg' }}" alt="Profile"
+            <img src="#" alt="Profile"
                 class="w-8 h-8 rounded-full">
         </div>
     </div>
