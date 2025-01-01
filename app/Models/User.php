@@ -21,6 +21,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'program_id',
+        'first_login',
+        'role',
+        'email_verified_at'
     ];
 
     /**
@@ -32,6 +36,21 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function program()
+    {
+        return $this->belongsTo(Program::class);
+    }
+
+    public function researchGroup()
+    {
+        return $this->belongsTo(ResearchGroup::class);
+    }
+
+    public function lecturerQuotas()
+    {
+        return $this->hasMany(LecturerQuota::class, 'lecturer_id');
+    }
 
     /**
      * Get the attributes that should be cast.
