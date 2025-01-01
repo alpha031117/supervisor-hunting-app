@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Log;
 
 class LoginRequest extends FormRequest
 {
@@ -40,17 +41,37 @@ class LoginRequest extends FormRequest
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
-
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
-
+    
+        Log::info('Login attempt with email: ' . $this->input('email'));
+    
+        // Check if user exists
+        $user = \App\Models\User::where('email', $this->input('email'))->first();
+        if (!$user) {
+            Log::error('No user found with email: ' . $this->input('email'));
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
+                'email' => 'Invalid credentials. Please try again.',
             ]);
         }
-
+    
+        // Verify password
+        if (!\Illuminate\Support\Facades\Hash::check($this->input('password'), $user->password)) {
+            Log::error('Password mismatch: ' . $this->input('password'));
+            Log::error('Password mismatch for email: ' . $this->input('email'));
+            throw ValidationException::withMessages([
+                'password' => 'Invalid credentials. Please try again.',
+            ]);
+        }
+    
+        // Attempt login
+        if (!Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+            RateLimiter::hit($this->throttleKey());
+            throw ValidationException::withMessages(['email' => trans('auth.failed')]);
+        }
+    
+        Log::info('Login successful for email: ' . $this->input('email'));
         RateLimiter::clear($this->throttleKey());
     }
+    
 
     /**
      * Ensure the login request is not rate limited.
