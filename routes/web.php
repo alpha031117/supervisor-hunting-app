@@ -19,14 +19,18 @@ Route::middleware('auth')->group(function () {
 
         // User List
         Route::get('/user-list', [ManageUserController::class, 'displayUserList'])
-        // ->middleware('auth')
         ->name('admin.user-list');
+
+        // Create User Bulk
+        Route::post('/create-user-bulk', [ManageUserController::class, 'createUserBulk'])
+        ->name('admin.create-user-bulk');
 
         // User Report
         Route::get('/user-report', [ManageUserController::class, 'displayUserReport'])
-        // ->middleware('auth')
         ->name('admin.user-report');
-        Route::post('/admin/filter-data', [ManageUserController::class, 'filterData'])->name('admin.filter-data');
+
+        Route::post('/admin/filter-data', [ManageUserController::class, 'filterData'])
+        ->name('admin.filter-data');
     });
 
     // Lecturer
