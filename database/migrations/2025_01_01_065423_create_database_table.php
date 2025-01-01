@@ -35,7 +35,6 @@ return new class extends Migration
             $table->foreignId('research_group_id')->nullable()->constrained('research_groups')->nullOnDelete();
             $table->boolean('first_login')->default(true);
             $table->string('role', 50);
-            $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
             $table->rememberToken();
         });

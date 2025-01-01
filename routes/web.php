@@ -64,24 +64,26 @@ Route::post('login', [AuthenticatedSessionController::class, 'store'])
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->name('auth.logout');
 
-// Reset Password
-Route::get('/reset-password', [AuthenticatedSessionController::class, 'resetPassword'])
-    ->middleware('guest')
-    ->name('reset-password');
+Route::middleware('auth')->group(function () {
+    // Reset Password
+    Route::get('/reset-password', [AuthenticatedSessionController::class, 'resetPassword'])
+        ->name('auth.reset-password');
 
-// Confirm Password
-Route::post('/store-session', [AuthenticatedSessionController::class, 'store_session'])
-    ->middleware('guest')
-    ->name('store-session');
-Route::get('/confirm-password', [AuthenticatedSessionController::class, 'retypePassword'])
-    ->middleware('guest')
-    ->name('confirm-password');
+    // Confirm Password
+    Route::post('/store-session', [AuthenticatedSessionController::class, 'store_session'])
+        ->name('auth.store-session');
+    Route::get('/confirm-password', [AuthenticatedSessionController::class, 'retypePassword'])
+        ->name('auth.confirm-password');
+    Route::post('/update-password', [AuthenticatedSessionController::class, 'updatePassword'])
+        ->name('auth.update-password');
 
-// Success Reset Password
-Route::get('/success-reset-password', function () {
-    return view('ManageUser.reset-successful');
-})->middleware('guest')
-    ->name('success-reset-password');
+    // Success Reset Password
+    Route::get('/success-reset-password', function () {
+        return view('ManageUser.reset-successful');
+    })
+    ->name('auth.success-reset-password');
+});
+
 
 
 
