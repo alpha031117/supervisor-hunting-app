@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 
-@section('page', 'Dashboard')
+@section('page', 'Coordinator Dashboard')
 
 @section('breadcrumbs')
     <li>First Item</li>

@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="./node_modules/preline/dist/preline.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
@@ -16,7 +17,7 @@
     @include('partials.sidebar')
 
     <!-- Main Content -->
-    <main class="flex-1 bg-gray-50">
+    <main class="flex-1 bg-gray-50 mb-5">
         @include('partials.header')
 
         <!-- Page Content -->
