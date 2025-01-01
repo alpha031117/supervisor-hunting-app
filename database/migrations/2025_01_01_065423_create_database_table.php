@@ -18,12 +18,20 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        Schema::create('research_groups', function (Blueprint $table) {
+            $table->id();
+            $table->string('group_name')->unique();
+            $table->string('group_description', 500)->nullable();
+            $table->timestamps();
+        });
+
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('email')->unique();
             $table->string('name');
             $table->string('password');
             $table->foreignId('program_id')->nullable()->constrained('programs')->nullOnDelete();
+            $table->foreignId('research_group_id')->nullable()->constrained('research_groups')->nullOnDelete();
             $table->boolean('first_login')->default(true);
             $table->string('role', 50);
             $table->timestamp('email_verified_at')->nullable();
@@ -37,14 +45,6 @@ return new class extends Migration
             $table->foreignId('lecturer_id')->constrained('users')->cascadeOnDelete();
             $table->integer('total_quota');
             $table->integer('remaining_quota')->default(0);
-            $table->timestamps();
-        });
-
-        Schema::create('research_groups', function (Blueprint $table) {
-            $table->id();
-            $table->string('group_name')->unique();
-            $table->string('group_description', 500)->nullable();
-            $table->foreignId('lecturer_id')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });
 
