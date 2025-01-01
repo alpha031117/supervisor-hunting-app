@@ -90,6 +90,7 @@
                     <th class="px-4 py-2 text-sm font-medium text-gray-700">Name</th>
                     <th class="px-4 py-2 text-sm font-medium text-gray-700">Email</th>
                     <th class="px-4 py-2 text-sm font-medium text-gray-700">Program</th>
+                    <th class="px-4 py-2 text-sm font-medium text-gray-700">Academic Year</th>
                     <th class="px-4 py-2 text-sm font-medium text-gray-700">Role</th>
                     <th class="px-4 py-2 text-sm font-medium text-gray-700 text-center justify-center">Research Group</th>
                 </tr>
@@ -101,6 +102,7 @@
                     <td class="px-4 py-2 text-sm text-gray-700">{{ $user->name }}</td>
                     <td class="px-4 py-2 text-sm text-gray-700">{{ $user->email }}</td>
                     <td class="px-4 py-2 text-sm text-gray-700">{{ $user->program->name }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ $user->year }}</td>
                     <td class="px-4 py-2 text-sm text-gray-700">{{ $user->role }}</td>
                     <td class="px-4 py-4 flex items-center justify-center">
                         @if ($user->role != 'lecturer')
