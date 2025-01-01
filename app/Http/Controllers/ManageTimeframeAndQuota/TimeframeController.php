@@ -11,4 +11,10 @@ class TimeframeController extends Controller
     {
         return view('ManageTimeframeAndQuota.set-timeframe');
     }
+
+    public function editTimeframe()
+    {
+        // Return the edit view with the timeframe data
+        return view('ManageTimeframeAndQuota.edit-timeframe');
+    }
 }

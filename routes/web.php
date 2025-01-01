@@ -81,3 +81,7 @@ Route::get('/user-report', [ManageUserController::class, 'displayUserReport'])
 // Set Timeframe
 Route::get('/set-timeframe', [TimeframeController::class, 'setTimeframe'])
     ->name('set-timeframe');
+
+// Edit Timeframe
+Route::get('/edit-timeframe', [TimeframeController::class, 'editTimeframe'])
+    ->name('edit-timeframe');
