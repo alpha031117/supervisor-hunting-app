@@ -5,7 +5,6 @@ namespace App\Http\Controllers\ManageUser;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
 use App\Models\Program;
