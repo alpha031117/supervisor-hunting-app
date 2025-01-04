@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ManageTimeframeAndQuota\QuotaController;
 use App\Http\Controllers\ManageUser\AuthenticatedSessionController;
 use App\Http\Controllers\ManageUser\ManageUserController;
 use App\Http\Controllers\ManageTimeframeAndQuota\TimeframeController;
@@ -78,10 +79,12 @@ Route::get('/user-report', [ManageUserController::class, 'displayUserReport'])
     ->middleware('auth')
     ->name('user-report');
 
-// Set Timeframe
-Route::get('/set-timeframe', [TimeframeController::class, 'setTimeframe'])
-    ->name('set-timeframe');
+Route::get('/set-timeframe', [TimeframeController::class, 'setTimeframe'])->name('set-timeframe');
+Route::post('/store-timeframe', [TimeframeController::class, 'storeTimeframe'])->name('store-timeframe');
+Route::get('/edit-timeframe', [TimeframeController::class, 'editTimeframe'])->name('edit-timeframe');
+Route::post('/update-timeframe', [TimeframeController::class, 'updateTimeframe'])->name('update-timeframe');
 
-// Edit Timeframe
-Route::get('/edit-timeframe', [TimeframeController::class, 'editTimeframe'])
-    ->name('edit-timeframe');
+
+// Lecturer Quota List
+Route::get('/lecturer-quota', [QuotaController::class, 'displayLecturerQuota'])
+    ->name('lecturer-quota');
