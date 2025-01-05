@@ -40,15 +40,9 @@
     </main>
 
     <!-- Footer -->
-<<<<<<< HEAD
-    @include('partials.footer')
-
-    <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
-=======
     <footer class="bg-gray-50 text-black text-center py-4">
         <p>&copy; {{ date('Y') }} FYP Hunt. All rights reserved.</p>
     </footer>
->>>>>>> 1d65eb6f2bd2e7d8ad7477bcebf756a33a5d8108
 </body>
 
 </html>

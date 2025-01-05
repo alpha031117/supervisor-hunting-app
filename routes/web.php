@@ -21,36 +21,25 @@ Route::middleware('auth')->group(function () {
 
         // User List
         Route::get('/user-list', [ManageUserController::class, 'displayUserList'])
-<<<<<<< HEAD
-            // ->middleware('auth')
             ->name('admin.user-list');
-=======
-        ->name('admin.user-list');
->>>>>>> 1d65eb6f2bd2e7d8ad7477bcebf756a33a5d8108
 
         // Create User Bulk
         Route::post('/create-user-bulk', [ManageUserController::class, 'createUserBulk'])
-        ->name('admin.create-user-bulk');
+            ->name('admin.create-user-bulk');
 
         // Update Research Group
         Route::post('/update-research-group', [ManageUserController::class, 'updateResearchGroup'])
-        ->name('admin.update-research-group');
-        
+            ->name('admin.update-research-group');
+
         // User Report
         Route::get('/user-report', [ManageUserController::class, 'displayUserReport'])
-<<<<<<< HEAD
-            // ->middleware('auth')
             ->name('admin.user-report');
-        Route::post('/admin/filter-data', [ManageUserController::class, 'filterData'])->name('admin.filter-data');
-=======
-        ->name('admin.user-report');
 
         Route::post('/admin/filter-data', [ManageUserController::class, 'filterData'])
-        ->name('admin.filter-data');
+            ->name('admin.filter-data');
 
         Route::post('/admin/filter-data-all', [ManageUserController::class, 'displayFilteredUser'])
-        ->name('admin.filter-data-all');
->>>>>>> 1d65eb6f2bd2e7d8ad7477bcebf756a33a5d8108
+            ->name('admin.filter-data-all');
     });
 
     // Lecturer
@@ -94,7 +83,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/success-reset-password', function () {
         return view('ManageUser.reset-successful');
     })
-    ->name('auth.success-reset-password');
+        ->name('auth.success-reset-password');
 });
 
 
