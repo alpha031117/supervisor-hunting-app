@@ -5,23 +5,28 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <script src="./node_modules/preline/dist/preline.js"></script>
+
+    <!-- Preline and Flowbite -->
+    <script src="https://cdn.jsdelivr.net/npm/preline"></script>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+
     <title>@yield('title', 'FYP Hunt')</title>
     @vite('resources/css/app.css')
 </head>
 
-<body class="bg-gray-50 h-screen flex">
+<body class="bg-gray-50 min-h-screen flex flex-col">
     <!-- Sidebar -->
-    @include('partials.sidebar')
+    <div class="w-64 bg-white shadow-lg fixed top-0 left-0 h-screen">
+        @include('partials.sidebar')
+    </div>
 
     <!-- Main Content -->
-    <main class="flex-1 bg-gray-50 mb-5">
+    <main class="flex-1 ml-64">
         @include('partials.header')
 
         <!-- Page Content -->
-        <div class="p-6">
+        <div class="p-6 flex-grow">
             {{-- Breadcrumb --}}
             <nav class="text-gray-500" aria-label="Breadcrumb">
                 <ol class="flex items-center space-x-2">
@@ -35,9 +40,15 @@
     </main>
 
     <!-- Footer -->
+<<<<<<< HEAD
     @include('partials.footer')
 
     <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
+=======
+    <footer class="bg-gray-50 text-black text-center py-4">
+        <p>&copy; {{ date('Y') }} FYP Hunt. All rights reserved.</p>
+    </footer>
+>>>>>>> 1d65eb6f2bd2e7d8ad7477bcebf756a33a5d8108
 </body>
 
 </html>

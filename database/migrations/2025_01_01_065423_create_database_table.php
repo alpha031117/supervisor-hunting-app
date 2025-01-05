@@ -31,10 +31,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('password');
             $table->foreignId('program_id')->nullable()->constrained('programs')->nullOnDelete();
+            $table->string('year');
             $table->foreignId('research_group_id')->nullable()->constrained('research_groups')->nullOnDelete();
             $table->boolean('first_login')->default(true);
             $table->string('role', 50);
-            $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
             $table->rememberToken();
         });

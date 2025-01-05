@@ -1,4 +1,4 @@
-<nav class="bg-white">
+<nav class="bg-white shadow-lg">
     <div class="px-4 py-3 flex justify-between items-center">
         <div class="flex items-center">
             <h1 class="text-2xl font-semibold">
@@ -31,8 +31,7 @@
                     </path>
                 </svg>
             </button>
-            <img src="{{ auth()->user()->avatar ?? '/default-avatar.jpg' }}" alt="Profile"
-                class="w-8 h-8 rounded-full">
+            <img src="#" alt="Profile" class="w-8 h-8 rounded-full">
         </div>
     </div>
 </nav>

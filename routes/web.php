@@ -21,14 +21,36 @@ Route::middleware('auth')->group(function () {
 
         // User List
         Route::get('/user-list', [ManageUserController::class, 'displayUserList'])
+<<<<<<< HEAD
             // ->middleware('auth')
             ->name('admin.user-list');
+=======
+        ->name('admin.user-list');
+>>>>>>> 1d65eb6f2bd2e7d8ad7477bcebf756a33a5d8108
 
+        // Create User Bulk
+        Route::post('/create-user-bulk', [ManageUserController::class, 'createUserBulk'])
+        ->name('admin.create-user-bulk');
+
+        // Update Research Group
+        Route::post('/update-research-group', [ManageUserController::class, 'updateResearchGroup'])
+        ->name('admin.update-research-group');
+        
         // User Report
         Route::get('/user-report', [ManageUserController::class, 'displayUserReport'])
+<<<<<<< HEAD
             // ->middleware('auth')
             ->name('admin.user-report');
         Route::post('/admin/filter-data', [ManageUserController::class, 'filterData'])->name('admin.filter-data');
+=======
+        ->name('admin.user-report');
+
+        Route::post('/admin/filter-data', [ManageUserController::class, 'filterData'])
+        ->name('admin.filter-data');
+
+        Route::post('/admin/filter-data-all', [ManageUserController::class, 'displayFilteredUser'])
+        ->name('admin.filter-data-all');
+>>>>>>> 1d65eb6f2bd2e7d8ad7477bcebf756a33a5d8108
     });
 
     // Lecturer
@@ -55,24 +77,26 @@ Route::post('login', [AuthenticatedSessionController::class, 'store'])
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->name('auth.logout');
 
-// Reset Password
-Route::get('/reset-password', [AuthenticatedSessionController::class, 'resetPassword'])
-    ->middleware('guest')
-    ->name('reset-password');
+Route::middleware('auth')->group(function () {
+    // Reset Password
+    Route::get('/reset-password', [AuthenticatedSessionController::class, 'resetPassword'])
+        ->name('auth.reset-password');
 
-// Confirm Password
-Route::post('/store-session', [AuthenticatedSessionController::class, 'store_session'])
-    ->middleware('guest')
-    ->name('store-session');
-Route::get('/confirm-password', [AuthenticatedSessionController::class, 'retypePassword'])
-    ->middleware('guest')
-    ->name('confirm-password');
+    // Confirm Password
+    Route::post('/store-session', [AuthenticatedSessionController::class, 'store_session'])
+        ->name('auth.store-session');
+    Route::get('/confirm-password', [AuthenticatedSessionController::class, 'retypePassword'])
+        ->name('auth.confirm-password');
+    Route::post('/update-password', [AuthenticatedSessionController::class, 'updatePassword'])
+        ->name('auth.update-password');
 
-// Success Reset Password
-Route::get('/success-reset-password', function () {
-    return view('ManageUser.reset-successful');
-})->middleware('guest')
-    ->name('success-reset-password');
+    // Success Reset Password
+    Route::get('/success-reset-password', function () {
+        return view('ManageUser.reset-successful');
+    })
+    ->name('auth.success-reset-password');
+});
+
 
 // User Report
 Route::get('/user-report', [ManageUserController::class, 'displayUserReport'])
