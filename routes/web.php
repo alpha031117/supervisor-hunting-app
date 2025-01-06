@@ -97,7 +97,8 @@ Route::post('/store-timeframe', [TimeframeController::class, 'storeTimeframe'])-
 Route::get('/edit-timeframe/{id?}', [TimeframeController::class, 'editTimeframe'])->name('edit-timeframe');
 Route::post('/update-timeframe', [TimeframeController::class, 'updateTimeframe'])->name('update-timeframe');
 
+// Route to display the lecturer quota list
+Route::get('/lecturer-quota-list', [QuotaController::class, 'displayLecturerQuota'])->name('lecturer-quota-list');
 
-// Lecturer Quota List
-Route::get('/lecturer-quota', [QuotaController::class, 'displayLecturerQuota'])
-    ->name('lecturer-quota');
+// Route to handle the form submission
+Route::post('/save-lecturer-quota/{lecturer_id}', [QuotaController::class, 'saveQuota'])->name('save-lecturer-quota');

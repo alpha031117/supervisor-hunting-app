@@ -82,8 +82,8 @@ class DatabaseSeeder extends Seeder
             [
                 'semester' => 'Fall 2025',
                 'lecturer_id' => 2,
-                'total_quota' => 10,
-                'remaining_quota' => 8,
+                'total_quota' => 0,
+                'remaining_quota' => 0,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
