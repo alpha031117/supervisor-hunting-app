@@ -52,14 +52,25 @@ class TimeframeController extends Controller
     }
 
     /**
-     * Display the timeframe editing form.
+     * Display the edit timeframe page.
      */
-    public function editTimeframe()
+    public function editTimeframe($id = null)
     {
-        // Retrieve the latest timeframe for editing
-        $currentPeriod = SupervisorHuntingPeriod::latest()->first();
+        // Fetch all timeframes for the dropdown
+        $timeframes = SupervisorHuntingPeriod::all();
 
-        return view('ManageTimeframeAndQuota.edit-timeframe', compact('currentPeriod'));
+        // Fetch the selected timeframe (if an ID is provided)
+        $currentPeriod = $id ? SupervisorHuntingPeriod::find($id) : null;
+
+
+        // Format the start and end dates for the Date Picker
+        if ($currentPeriod) {
+            $currentPeriod->formatted_start_date = \Carbon\Carbon::parse($currentPeriod->start_date)->format('m/d/Y');
+            $currentPeriod->formatted_end_date = \Carbon\Carbon::parse($currentPeriod->end_date)->format('m/d/Y');
+        }
+
+        // dd($currentPeriod);
+        return view('ManageTimeframeAndQuota.edit-timeframe', compact('timeframes', 'currentPeriod'));
     }
 
     /**
@@ -69,22 +80,20 @@ class TimeframeController extends Controller
     {
         // Validate input
         $request->validate([
+            'timeframe_id' => 'required|exists:supervisor_hunting_periods,id',
             'start_date' => 'required|date|before:end_date',
             'end_date' => 'required|date|after:start_date',
         ]);
 
-        // Find the current timeframe or fail
-        $currentPeriod = SupervisorHuntingPeriod::latest()->first();
+        // Fetch the timeframe to update
+        $timeframe = SupervisorHuntingPeriod::find($request->timeframe_id);
 
-        if ($currentPeriod) {
-            $currentPeriod->update([
-                'start_date' => $request->start_date,
-                'end_date' => $request->end_date,
-            ]);
+        // Update the timeframe
+        $timeframe->update([
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+        ]);
 
-            return redirect()->route('edit-timeframe')->with('success', 'Timeframe has been updated successfully!');
-        }
-
-        return redirect()->route('edit-timeframe')->with('error', 'No existing timeframe found!');
+        return redirect()->route('edit-timeframe', $timeframe->id)->with('success', 'Timeframe has been updated successfully!');
     }
 }
