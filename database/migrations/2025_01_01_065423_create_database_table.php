@@ -76,6 +76,8 @@ return new class extends Migration
             $table->id();
             $table->date('start_date');
             $table->date('end_date');
+            $table->string('semester', 50)->nullable();
+            $table->boolean('is_set')->default(false);
             $table->timestamps();
         });
 

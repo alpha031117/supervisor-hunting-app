@@ -9,5 +9,10 @@ class SupervisorHuntingPeriod extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['start_date', 'end_date'];
+    protected $fillable = ['start_date', 'end_date', 'semester'];
+
+    protected $casts = [
+        'start_date' => 'date',
+        'end_date' => 'date',
+    ];
 }

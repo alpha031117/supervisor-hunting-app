@@ -13,10 +13,7 @@ class TimeframeController extends Controller
      */
     public function setTimeframe()
     {
-        // Retrieve the latest timeframe or create a blank one for the view
-        $currentPeriod = SupervisorHuntingPeriod::latest()->first();
-
-        return view('ManageTimeframeAndQuota.set-timeframe', compact('currentPeriod'));
+        return view('ManageTimeframeAndQuota.set-timeframe');
     }
 
     /**
@@ -24,16 +21,31 @@ class TimeframeController extends Controller
      */
     public function storeTimeframe(Request $request)
     {
+
         // Validate input
         $request->validate([
+            'semester' => 'required|string|max:50',
             'start_date' => 'required|date|before:end_date',
             'end_date' => 'required|date|after:start_date',
         ]);
 
+        // Check if the semester already exists in the database
+        $semesterExists = SupervisorHuntingPeriod::where('semester', $request->semester)->exists();
+
+        if ($semesterExists) {
+            // Return validation error if the semester already exists
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors(['semester' => 'Timeframe for this semester already exists.']);
+        }
+
         // Create or update the timeframe
         SupervisorHuntingPeriod::create([
+            'semester' => $request->semester,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
+            'is_set' => true,
         ]);
 
         return redirect()->route('set-timeframe')->with('success', 'Timeframe has been set successfully!');
