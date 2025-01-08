@@ -15,4 +15,9 @@ class SupervisorHuntingPeriod extends Model
         'start_date' => 'date',
         'end_date' => 'date',
     ];
+
+    public function lecturerQuotas()
+    {
+        return $this->hasMany(LecturerQuota::class);
+    }
 }

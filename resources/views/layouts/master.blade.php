@@ -13,26 +13,11 @@
 
     <title>@yield('title', 'FYP Hunt')</title>
     @vite('resources/css/app.css')
-
-    <style>
-        /* Custom styles for Flatpickr */
-        .flatpickr-calendar {
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-
-        .flatpickr-day.selected {
-            background: #3b82f6;
-            border-color: #3b82f6;
-        }
-    </style>
 </head>
 
-<body class="bg-gray-50 min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col">
     <!-- Sidebar -->
-    <div class="w-64 bg-white shadow-lg fixed top-0 left-0 h-screen">
+    <div class="w-64 shadow-lg fixed top-0 left-0 h-screen">
         @include('partials.sidebar')
     </div>
 
@@ -55,7 +40,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-50 text-black text-center py-4">
+    <footer class="text-black text-center py-4">
         <p>&copy; {{ date('Y') }} FYP Hunt. All rights reserved.</p>
     </footer>
 </body>

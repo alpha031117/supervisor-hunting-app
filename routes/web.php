@@ -40,6 +40,39 @@ Route::middleware('auth')->group(function () {
 
         Route::post('/admin/filter-data-all', [ManageUserController::class, 'displayFilteredUser'])
             ->name('admin.filter-data-all');
+
+        Route::get('/set-timeframe', [TimeframeController::class, 'setTimeframe'])
+            ->name('set-timeframe');
+
+        Route::post('/store-timeframe', [TimeframeController::class, 'storeTimeframe'])
+            ->name('store-timeframe');
+
+        Route::get('/edit-timeframe/{id?}', [TimeframeController::class, 'editTimeframe'])
+            ->name('edit-timeframe');
+
+        Route::post('/update-timeframe', [TimeframeController::class, 'updateTimeframe'])
+            ->name('update-timeframe');
+
+        Route::get('/manage-lecturer-quota', [QuotaController::class, 'manageLecturerQuota'])
+            ->name('manage-lecturer-quota');
+
+        Route::post('/save-lecturer-quota/{lecturer_id}', [QuotaController::class, 'saveQuota'])
+            ->name('save-lecturer-quota');
+
+        Route::get('/admin/quota-data', [QuotaController::class, 'getQuotaData'])
+            ->name('lecturer-quota-report');
+
+        Route::get('/lecturer-quota-report', [QuotaController::class, 'displayQuotaReport'])
+            ->name('lecturer-quota-report');
+
+        Route::post('/admin/filter-by-semester', [QuotaController::class, 'filterBySemester'])
+            ->name('filter-by-semester');
+
+        Route::delete('/delete-timeframe/{id}', [TimeframeController::class, 'deleteTimeframe'])
+            ->name('delete-timeframe');
+
+        Route::get('/filter-lecturer-quota', [QuotaController::class, 'filterBySemesterForQuota'])
+            ->name('filter-lecturer-quota');
     });
 
     // Lecturer
@@ -86,19 +119,10 @@ Route::middleware('auth')->group(function () {
         ->name('auth.success-reset-password');
 });
 
-
 // User Report
 Route::get('/user-report', [ManageUserController::class, 'displayUserReport'])
     ->middleware('auth')
-    ->name('user-report');
-
-Route::get('/set-timeframe', [TimeframeController::class, 'setTimeframe'])->name('set-timeframe');
-Route::post('/store-timeframe', [TimeframeController::class, 'storeTimeframe'])->name('store-timeframe');
-Route::get('/edit-timeframe/{id?}', [TimeframeController::class, 'editTimeframe'])->name('edit-timeframe');
-Route::post('/update-timeframe', [TimeframeController::class, 'updateTimeframe'])->name('update-timeframe');
+    ->name('admin.user-report');
 
 // Route to display the lecturer quota list
 Route::get('/lecturer-quota-list', [QuotaController::class, 'displayLecturerQuota'])->name('lecturer-quota-list');
-
-// Route to handle the form submission
-Route::post('/save-lecturer-quota/{lecturer_id}', [QuotaController::class, 'saveQuota'])->name('save-lecturer-quota');
