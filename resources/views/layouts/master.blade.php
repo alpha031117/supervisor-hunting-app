@@ -15,9 +15,9 @@
     @vite('resources/css/app.css')
 </head>
 
-<body class="bg-gray-50 min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col">
     <!-- Sidebar -->
-    <div class="w-64 bg-white shadow-lg fixed top-0 left-0 h-screen">
+    <div class="w-64 shadow-lg fixed top-0 left-0 h-screen">
         @include('partials.sidebar')
     </div>
 
@@ -40,7 +40,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-50 text-black text-center py-4">
+    <footer class="text-black text-center py-4">
         <p>&copy; {{ date('Y') }} FYP Hunt. All rights reserved.</p>
     </footer>
 </body>

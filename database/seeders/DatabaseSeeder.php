@@ -77,13 +77,22 @@ class DatabaseSeeder extends Seeder
             ],
         ]);
 
+        // Create supervisor hunting periods
+        $period = SupervisorHuntingPeriod::create([
+            'start_date' => '2025-01-01',
+            'end_date' => '2025-06-30',
+            'semester' => 'Semester I 2024/25',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         // Create lecturer quotas
         LecturerQuota::insert([
             [
-                'semester' => 'Fall 2025',
+                'supervisor_hunting_period_id' => $period->id,
                 'lecturer_id' => 2,
-                'total_quota' => 10,
-                'remaining_quota' => 8,
+                'total_quota' => 0,
+                'remaining_quota' => 0,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -96,16 +105,6 @@ class DatabaseSeeder extends Seeder
                 'proposal_title' => 'AI in Education',
                 'proposal_description' => 'Exploring AI applications in educational technology.',
                 'status' => 'Available',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
-
-        // Create supervisor hunting periods
-        SupervisorHuntingPeriod::insert([
-            [
-                'start_date' => '2025-01-01',
-                'end_date' => '2025-06-30',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\ManageTimeframeAndQuota\QuotaController;
 use App\Http\Controllers\ManageUser\AuthenticatedSessionController;
 use App\Http\Controllers\ManageUser\ManageUserController;
+use App\Http\Controllers\ManageTimeframeAndQuota\TimeframeController;
 use Illuminate\Support\Facades\Route;
 
 // Create route here
@@ -19,25 +21,58 @@ Route::middleware('auth')->group(function () {
 
         // User List
         Route::get('/user-list', [ManageUserController::class, 'displayUserList'])
-        ->name('admin.user-list');
+            ->name('admin.user-list');
 
         // Create User Bulk
         Route::post('/create-user-bulk', [ManageUserController::class, 'createUserBulk'])
-        ->name('admin.create-user-bulk');
+            ->name('admin.create-user-bulk');
 
         // Update Research Group
         Route::post('/update-research-group', [ManageUserController::class, 'updateResearchGroup'])
-        ->name('admin.update-research-group');
-        
+            ->name('admin.update-research-group');
+
         // User Report
         Route::get('/user-report', [ManageUserController::class, 'displayUserReport'])
-        ->name('admin.user-report');
+            ->name('admin.user-report');
 
         Route::post('/admin/filter-data', [ManageUserController::class, 'filterData'])
-        ->name('admin.filter-data');
+            ->name('admin.filter-data');
 
         Route::post('/admin/filter-data-all', [ManageUserController::class, 'displayFilteredUser'])
-        ->name('admin.filter-data-all');
+            ->name('admin.filter-data-all');
+
+        Route::get('/set-timeframe', [TimeframeController::class, 'setTimeframe'])
+            ->name('set-timeframe');
+
+        Route::post('/store-timeframe', [TimeframeController::class, 'storeTimeframe'])
+            ->name('store-timeframe');
+
+        Route::get('/edit-timeframe/{id?}', [TimeframeController::class, 'editTimeframe'])
+            ->name('edit-timeframe');
+
+        Route::post('/update-timeframe', [TimeframeController::class, 'updateTimeframe'])
+            ->name('update-timeframe');
+
+        Route::get('/manage-lecturer-quota', [QuotaController::class, 'manageLecturerQuota'])
+            ->name('manage-lecturer-quota');
+
+        Route::post('/save-lecturer-quota/{lecturer_id}', [QuotaController::class, 'saveQuota'])
+            ->name('save-lecturer-quota');
+
+        Route::get('/admin/quota-data', [QuotaController::class, 'getQuotaData'])
+            ->name('lecturer-quota-report');
+
+        Route::get('/lecturer-quota-report', [QuotaController::class, 'displayQuotaReport'])
+            ->name('lecturer-quota-report');
+
+        Route::post('/admin/filter-by-semester', [QuotaController::class, 'filterBySemester'])
+            ->name('filter-by-semester');
+
+        Route::delete('/delete-timeframe/{id}', [TimeframeController::class, 'deleteTimeframe'])
+            ->name('delete-timeframe');
+
+        Route::get('/filter-lecturer-quota', [QuotaController::class, 'filterBySemesterForQuota'])
+            ->name('filter-lecturer-quota');
     });
 
     // Lecturer
@@ -58,7 +93,7 @@ Route::get('/login', [AuthenticatedSessionController::class, 'create'])
 
 // Authenticate
 Route::post('login', [AuthenticatedSessionController::class, 'store'])
-->name('auth.login');
+    ->name('auth.login');
 
 // Logout
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
@@ -81,9 +116,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/success-reset-password', function () {
         return view('ManageUser.reset-successful');
     })
-    ->name('auth.success-reset-password');
+        ->name('auth.success-reset-password');
 });
 
+// User Report
+Route::get('/user-report', [ManageUserController::class, 'displayUserReport'])
+    ->middleware('auth')
+    ->name('admin.user-report');
 
-
-
+// Route to display the lecturer quota list
+Route::get('/lecturer-quota-list', [QuotaController::class, 'displayLecturerQuota'])->name('lecturer-quota-list');
