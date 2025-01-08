@@ -21,15 +21,7 @@
         <!-- Left Group: Semester Filter & Filter Button -->
         <div class="flex items-center space-x-4">
             <!-- Semester Filter -->
-            {{-- <select id="semester"
-                class="border-b border-blue-500 text-blue-500 px-4 py-2 rounded-lg bg-white hover:bg-blue-50">
-                <option value="">All Semesters</option>
-                @foreach ($semesters as $semester)
-                    <option value="{{ $semester }}">{{ $semester }}</option>
-                @endforeach
-            </select> --}}
-            <select id="semester"
-                class="border-b border-blue-500 text-blue-500 px-4 py-2 rounded-lg bg-white hover:bg-blue-50">
+            <select id="semester" class="border-b border-blue-500 text-blue-500 px-4 py-2 rounded-lg bg-white">
                 <option value="">All Semesters</option>
                 @foreach ($semesters as $semester)
                     <option value="{{ $semester }}">{{ $semester }}</option>
@@ -119,7 +111,7 @@
                         </div>
                     </div>
                     <table class="w-full border-collapse border border-gray-300 mt-4">
-                        <thead>
+                        <thead class="bg-gray-100">
                             <tr class="bg-gray-100">
                                 <th class="border px-4 py-2">No</th>
                                 <th class="border px-4 py-2">Lecturer Name</th>
@@ -171,7 +163,7 @@
             // Show a loading indicator
             function showLoading() {
                 tableBody.innerHTML = `
-                    <tr class="border-b">
+                    <tr class="border-b h-16">
                         <td colspan="6" class="px-4 py-2 text-center text-gray-500">Loading...</td>
                     </tr>
                 `;
@@ -183,7 +175,7 @@
                 if (quotas && quotas.length > 0) {
                     quotas.forEach((quota, index) => {
                         const row = `
-                            <tr class="border-b">
+                            <tr class="border-b h-16">
                                 <td class="px-4 py-2">${index + 1}</td>
                                 <td class="px-4 py-2">${quota.lecturer.name || 'N/A'}</td>
                                 <td class="px-4 py-2">${quota.lecturer.email || 'N/A'}</td>
@@ -202,7 +194,7 @@
                     });
                 } else {
                     tableBody.innerHTML = `
-                        <tr>
+                        <tr class="border-b h-16">
                             <td colspan="6" class="px-4 py-2 text-center text-gray-500">No data available</td>
                         </tr>
                     `;
@@ -246,7 +238,7 @@
                     .catch(error => {
                         console.error('Error:', error);
                         tableBody.innerHTML = `
-                            <tr>
+                            <tr class="border-b h-16">
                                 <td colspan="6" class="px-4 py-2 text-center text-red-500">An error occurred. Please try again.</td>
                             </tr>
                         `;
@@ -292,7 +284,7 @@
                     // Populate Table Rows in Modal
                     reportData.innerHTML = data.quotas
                         .map((quota, index) => `
-                            <tr>
+                            <tr class="border-b h-16">
                                 <td class="border px-4 py-2 text-center">${index + 1}</td>
                                 <td class="border px-4 py-2">${quota.lecturer.name || 'N/A'}</td>
                                 <td class="border px-4 py-2">${quota.lecturer.email || 'N/A'}</td>
