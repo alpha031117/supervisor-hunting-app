@@ -131,8 +131,8 @@ class ManageUserController extends Controller
                     $lecturer_quota[] = [
                         'semester' => $lecturerData['semester'],
                         'lecturer_id' => $lecturer->id,
-                        'total_quota' => 10,
-                        'remaining_quota' => 10,
+                        'total_quota' => 0,
+                        'remaining_quota' => 0,
                         'created_at' => now(),
                     ];
                 }
