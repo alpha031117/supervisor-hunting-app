@@ -70,21 +70,15 @@ class ManageUserController extends Controller
             while (($data = fgetcsv($file)) !== false) {
                 $row++;
 
-                // Validate the data
-                if(count($data) !== 6) {
-                    fclose($file);
-                    return redirect()->route('admin.user-list')->with('error', 'Invalid CSV format. Each row must have name, email, password, program_id, role and academic_year.');
-                }
-
                 // Skip the header row (row 1)
                 if ($row === 1) {
                     // Check if the header row matches the expected format
-                    if ($data[0] === 'name' && $data[1] === 'email' && $data[2] === 'password' && $data[3] === 'program_id' && $data[4] === 'role' && $data[5] === 'academic_year') {
+                    if ($data[0] === 'name' && $data[1] === 'email' && $data[2] === 'password' && $data[3] === 'pi/rg' && $data[4] === 'role' && $data[5] === 'academic_year') {
                         continue; // Skip the header row
                     } else {
                         fclose($file);
                         // Throw an error if the headers do not match
-                        return redirect()->route('user-list')->with('error', 'Invalid CSV header format. Each row must have name, email, program_id, role and academic_year.');
+                        return redirect()->route('admin.user-list')->with('error', 'Invalid CSV header format. Each row must have name, email, password, pi/rg, role and academic_year.');
                     }
                 }
 
