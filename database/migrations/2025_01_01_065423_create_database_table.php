@@ -43,7 +43,7 @@ return new class extends Migration
                 ->constrained('research_groups')
                 ->nullOnDelete();
             $table->boolean('first_login')->default(true);
-            $table->string('role', 50);
+            $table->string('role')->default('student'); 
             $table->timestamps();
             $table->rememberToken();
         });
@@ -129,6 +129,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('lecturer_id')->constrained('users')->cascadeOnDelete();
             $table->string('file_path');
+            $table->string('room_no')->default('N/A')->change();
+
+
             $table->timestamps();
         });
 

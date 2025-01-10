@@ -64,4 +64,15 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public static function isLecturer($user)
+    {
+        return $user->role === 'lecturer';
+    }
+
+    public function timetable()
+    {
+
+        return $this->hasOne(Timetable::class, 'lecturer_id');
+    }
 }

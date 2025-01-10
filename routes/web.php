@@ -3,13 +3,38 @@
 use App\Http\Controllers\ManageTimeframeAndQuota\QuotaController;
 use App\Http\Controllers\ManageUser\AuthenticatedSessionController;
 use App\Http\Controllers\ManageUser\ManageUserController;
+use App\Http\Controllers\ManageAppointment\ManageAppointmentController;
 use App\Http\Controllers\ManageTimeframeAndQuota\TimeframeController;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Auth;
 // Create route here
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
+
+// Auth::routes(['verify' => true]);
+Route::middleware(['auth:sanctum'])->group(function () {
+
+Route::get('/my-appointments', [ManageAppointmentController::class, 'listAppointments'])->name('appointments.myAppointments');
+Route::post('/applyappointment/{lecturer}', [ManageAppointmentController::class, 'create'])->name('applyappointment.create');
+Route::get('/applyappointment/{lecturer}', [ManageAppointmentController::class, 'showRequestForm'])->name('appointments.request');
+Route::post('/appointments', [ManageAppointmentController::class, 'store'])->name('appointments.store');
+Route::delete('/appointments/{id}', [ManageAppointmentController::class, 'cancelAppointment'])->name('appointments.cancel');
+
+ // Lecturer Routes
+ Route::get('/lecturer/appointments', [ManageAppointmentController::class, 'lecturerAppointments'])->name('lecturer.appointments');
+ Route::get('/response-appointment', [ManageAppointmentController::class, 'responseAppointment'])->name('lecturer.responseAppointment');
+ Route::post('/lecturer/appointments/{id}/approve', [ManageAppointmentController::class, 'approveAppointment'])->name('approveAppointment');
+ Route::post('/lecturer/appointments/{id}/reject', [ManageAppointmentController::class, 'rejectAppointment'])->name('rejectAppointment');
+
+ // Upload Routes
+ Route::get('/upload', [ManageAppointmentController::class, 'showUploadForm'])->name('schedule.upload.form');
+ Route::post('/upload', [ManageAppointmentController::class, 'uploadSchedule'])->name('schedule.upload');
+
+ Route::get('/search', [ManageAppointmentController::class, 'search'])->name('search');
+
+});
+
 
 Route::middleware('auth')->group(function () {
     // Reset Password
@@ -64,8 +89,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/admin/filter-data-all', [ManageUserController::class, 'displayFilteredUser'])
             ->name('admin.filter-data-all');
 
-        Route::get('/set-timeframe', [TimeframeController::class, 'setTimeframe'])
-            ->name('set-timeframe');
+        // Route::get('/set-timeframe', [TimeframeController::class, 'setTimeframe'])
+        //     ->name('set-timeframe');
 
         Route::post('/store-timeframe', [TimeframeController::class, 'storeTimeframe'])
             ->name('store-timeframe');
@@ -82,8 +107,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/save-lecturer-quota/{lecturer_id}', [QuotaController::class, 'saveQuota'])
             ->name('save-lecturer-quota');
 
-        Route::get('/admin/quota-data', [QuotaController::class, 'getQuotaData'])
-            ->name('lecturer-quota-report');
+        // Route::get('/admin/quota-data', [QuotaController::class, 'getQuotaData'])
+        //     ->name('lecturer-quota-report');
 
         Route::get('/lecturer-quota-report', [QuotaController::class, 'displayQuotaReport'])
             ->name('lecturer-quota-report');
