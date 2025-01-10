@@ -1,97 +1,125 @@
 @extends('layouts.master')
 
 @section('content')
-<div class="container my-5">
+<div class="container mx-auto my-10">
     <!-- Header Section -->
-    <div class="row mb-5 text-center">
-        <div class="col-md-12">
-            <h1 class="fw-bold display-5" style="color: #1814F3;">Appointment Details</h1>
-            <p class="text-muted fs-5">Review your appointment information and take the necessary actions.</p>
-        </div>
+    <div class="text-center mb-10">
+        <h1 class="text-4xl font-extrabold" style="color: #1814F3;">Appointment Details</h1>
+        <p class="text-gray-600 text-lg">Review your appointment information and take the necessary actions.</p>
     </div>
 
     <!-- Appointment Details Section -->
-    <div class="card shadow-lg border-0 rounded-3">
-        <div class="card-header text-white fw-bold" style="background-color: #1814F3;">
-           Appointment Information
+    <div class="bg-white shadow-lg rounded-lg border border-gray-200">
+        <div class="bg-[#1814F3] text-white font-bold px-6 py-4 rounded-t-lg">
+            Appointment Information
         </div>
-        <div class="card-body">
+        <div class="p-6">
             <!-- Appointment Details -->
-            <h4 class="fw-bold mb-3" style="color: #1814F3;">
-                <i class="bi bi-person-circle me-2"></i> {{ $appointment->lecturer->name }}
+            <h4 class="text-xl font-bold mb-5 flex items-center gap-2" style="color: #1814F3;">
+                <i class="bi bi-person-circle"></i> {{ $appointment->lecturer->name }}
             </h4>
-            <ul class="list-unstyled fs-5">
-                <li class="mb-3">
-                    <i class="bi bi-calendar2-week me-2 text-primary"></i> 
-                    <strong>Date:</strong> {{ $appointment->appointment_date }}
+            <ul class="space-y-4 text-lg">
+                <!-- Reason -->
+                <li class="flex items-center">
+                    <i class="bi bi-chat-left-text text-[#1814F3] mr-3"></i>
+                    <strong>Reason:</strong> <span class="ml-2">{{ $appointment->reason }}</span>
                 </li>
-                <li class="mb-3">
-                    <i class="bi bi-clock me-2 text-primary"></i> 
-                    <strong>Time:</strong> {{ \Carbon\Carbon::parse($appointment->appointment_time)->format('g:i A') }}
+
+                <!-- Date -->
+                <li class="flex items-center">
+                    <i class="bi bi-calendar2-week text-[#1814F3] mr-3"></i>
+                    <strong>Date:</strong> <span class="ml-2">{{ $appointment->appointment_date }}</span>
                 </li>
-                <li class="mb-3">
-                    <i class="bi bi-flag me-2 text-primary"></i> 
-                    <strong>Status:</strong> 
-                    @if ($appointment->status == 'Pending')
-                        <span class="badge rounded-pill px-3 py-2 bg-warning text-dark">Pending</span>
-                    @elseif ($appointment->status == 'Approved')
-                        <span class="badge rounded-pill px-3 py-2 bg-success">Approved</span>
-                    @else
-                        <span class="badge rounded-pill px-3 py-2 bg-danger">Rejected</span>
-                    @endif
+
+                <!-- Time -->
+                <li class="flex items-center">
+                    <i class="bi bi-clock text-[#1814F3] mr-3"></i>
+                    <strong>Time:</strong> <span class="ml-2">{{ \Carbon\Carbon::parse($appointment->appointment_time)->format('g:i A') }}</span>
                 </li>
-                <li>
-                    <i class="bi bi-chat-left-text me-2 text-primary"></i> 
-                    <strong>Reason:</strong> {{ $appointment->reason }}
+
+                <!-- Room No -->
+                <li class="flex items-center">
+                    <i class="bi bi-door-open text-[#1814F3] mr-3"></i>
+                    <strong>Room No:</strong> <span class="ml-2">{{ $appointment->lecturer->timetable->room_no ?? 'N/A' }}</span>
+                </li>
+
+                <!-- Status -->
+                <li class="flex items-center">
+                    <i class="bi bi-flag text-[#1814F3] mr-3"></i>
+                    <strong>Status:</strong>
+                    <span class="ml-2">
+                        @if ($appointment->status == 'Pending')
+                            <span class="bg-yellow-200 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium">Pending</span>
+                        @elseif ($appointment->status == 'Approved')
+                            <span class="bg-green-200 text-green-800 px-3 py-1 rounded-full text-sm font-medium">Approved</span>
+                        @else
+                            <span class="bg-red-200 text-red-800 px-3 py-1 rounded-full text-sm font-medium">Rejected</span>
+                        @endif
+                    </span>
                 </li>
             </ul>
         </div>
     </div>
 
     <!-- Actions -->
-    <div class="mt-5 d-flex justify-content-between">
-        <a href="{{ route('appointments.myAppointments') }}" 
-           class="btn btn-primary-outline">
+    <div class="mt-8 flex justify-between">
+        <a href="{{ route('appointments.myAppointments') }}"
+           class="text-[#1814F3] border border-[#1814F3] px-6 py-2 rounded-full hover:bg-[#1814F3] hover:text-white transition">
             <i class="bi bi-arrow-left"></i> Back to Appointments
         </a>
-        
+
         @if ($appointment->status == 'Pending')
         <!-- Cancel Button to Trigger Modal -->
-        <button type="button" 
-                class="btn btn-outline-danger btn-lg px-4 rounded-pill shadow-sm" 
-                data-bs-toggle="modal" 
-                data-bs-target="#cancelModal">
+        <button type="button"
+                class="bg-red-500 text-white px-6 py-2 rounded-full hover:bg-red-600 transition shadow-md"
+                data-modal-target="#cancelModal">
             <i class="bi bi-x-circle"></i> Cancel Appointment
         </button>
 
         <!-- Cancel Modal -->
-        <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="cancelModalLabel">Cancel Appointment</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        Are you sure you want to cancel your appointment with 
-                        <strong>{{ $appointment->lecturer->name }}</strong> on 
-                        <strong>{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('M d, Y') }}</strong> 
-                        at <strong>{{ \Carbon\Carbon::parse($appointment->appointment_time)->format('g:i A') }}</strong>?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <form id="cancel-form" 
-                              action="{{ route('appointments.cancel', $appointment->id) }}" 
-                              method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Yes, Cancel</button>
-                        </form>
-                    </div>
+        <div id="cancelModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+            <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+                <h5 class="text-lg font-semibold mb-4">Cancel Appointment</h5>
+                <p class="text-gray-600 mb-6">
+                    Are you sure you want to cancel your appointment with
+                    <strong>{{ $appointment->lecturer->name }}</strong> on
+                    <strong>{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('M d, Y') }}</strong>
+                    at <strong>{{ \Carbon\Carbon::parse($appointment->appointment_time)->format('g:i A') }}</strong>?
+                </p>
+                <div class="flex justify-end gap-4">
+                    <button
+                        class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition"
+                        data-modal-close="#cancelModal">Close</button>
+                    <form id="cancel-form"
+                          action="{{ route('appointments.cancel', $appointment->id) }}"
+                          method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
+                            Yes, Cancel
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
         @endif
     </div>
 </div>
+
+<script>
+    // Modal handling
+    document.querySelectorAll("[data-modal-target]").forEach(button => {
+        button.addEventListener("click", () => {
+            const target = button.getAttribute("data-modal-target");
+            document.querySelector(target).classList.remove("hidden");
+        });
+    });
+
+    document.querySelectorAll("[data-modal-close]").forEach(button => {
+        button.addEventListener("click", () => {
+            const target = button.getAttribute("data-modal-close");
+            document.querySelector(target).classList.add("hidden");
+        });
+    });
+</script>
 @endsection

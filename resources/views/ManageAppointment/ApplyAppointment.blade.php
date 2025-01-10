@@ -1,91 +1,93 @@
 @extends('layouts.master')
 
 @section('content')
-<div class="container mt-5">
-    <div class="card shadow-lg border-0">
-        <div class="card-body">
-            <h2 class="mb-4" style="color: #1814F3; font-weight: bold;">Request New Appointment</h2>
-            <p class="text-muted">Complete the form to book an appointment with <strong>{{ $lecturer->name }}</strong>.</p>
+<div class="container mx-auto mt-10">
+    <div class="bg-white shadow-lg rounded-lg">
+        <div class="p-6">
+            <h2 class="text-2xl font-bold text-blue-700 mb-4">Request New Appointment</h2>
+            <p class="text-gray-600">Complete the form to book an appointment with <strong>{{ $lecturer->name }}</strong>.</p>
             
-            <form action="{{ route('appointments.store') }}" method="POST">
+            <form id="appointmentForm" action="{{ route('appointments.store') }}" method="POST" class="mt-6">
                 @csrf
 
                 <!-- Display the timetable -->
                 @if (isset($timetable) && !empty($timetable->file_path))
-                <div class="mb-4">
-                    <h5 class="mb-3" style="color: #1814F3; font-weight: bold;">Lecturer Timetable</h5>
-                    <div class="card border-0 shadow-sm" style="background-color: #f9f9ff;">
-                        <div class="card-body d-flex align-items-center">
-                            <div class="me-3">
-                                <i class="bi bi-calendar-event" style="font-size: 2rem; color: #1814F3;"></i>
-                            </div>
-                            <div class="flex-grow-1">
-                                <h6 class="mb-1" style="color: #1814F3; font-weight: bold;">{{ basename($timetable->file_path) }}</h6>
-                                <p class="text-muted mb-0">Timetable file is available for viewing.</p>
-                            </div>
-                            <div>
-                                <a href="{{ asset('storage/' . $timetable->file_path) }}" target="_blank" class="btn btn-outline-primary" style="color: #1814F3; font-weight: bold; border-radius: 20px; border: 2px solid #1814F3; padding: 10px 20px; text-decoration: none;"
-                                   onmouseover="this.style.backgroundColor='#1814F3'; this.style.color='white';"
-                                   onmouseout="this.style.backgroundColor='transparent'; this.style.color='#1814F3';">View Timetable</a>
-                            </div>
+                <div class="mb-6">
+                    <h5 class="text-lg font-bold text-blue-700 mb-3">Lecturer Timetable</h5>
+                    <div class="bg-blue-50 p-4 rounded-lg shadow-sm flex items-center">
+                        <div class="mr-4">
+                            <i class="bi bi-calendar-event text-3xl text-blue-700"></i>
+                        </div>
+                        <div class="flex-grow">
+                            <h6 class="text-blue-700 font-bold">{{ basename($timetable->file_path) }}</h6>
+                            <p class="text-gray-500">Timetable file is available for viewing.</p>
+                        </div>
+                        <div>
+                            <a href="{{ asset('storage/' . $timetable->file_path) }}" target="_blank" 
+                                class="inline-block bg-transparent text-blue-700 border border-blue-700 px-5 py-2 rounded-full hover:bg-blue-700 hover:text-white transition">
+                                View Timetable
+                            </a>
                         </div>
                     </div>
                 </div>
                 @else
-                <div class="alert alert-warning d-flex align-items-center" style="background-color: #fff7e6; border: 1px solid #ffcc99; border-radius: 10px; padding: 15px;">
-                    <div class="me-3">
-                        <i class="bi bi-exclamation-triangle-fill" style="font-size: 1.5rem; color: #ff9800;"></i>
+                <div class="bg-yellow-100 text-yellow-700 border border-yellow-300 rounded-lg p-4 flex items-center mb-6">
+                    <div class="mr-4">
+                        <i class="bi bi-exclamation-triangle-fill text-2xl"></i>
                     </div>
                     <div>
-                        <strong style="color: #1814F3; font-weight: bold;">Notice:</strong> No timetable is available for this lecturer.
+                        <strong class="font-bold text-blue-700">Notice:</strong> No timetable is available for this lecturer.
                     </div>
                 </div>
                 @endif
 
+                <div class="mb-4">
+                    <label for="room_no" class="block text-blue-700 font-bold mb-1">Room No</label>
+                    <input type="text" id="room_no" name="room_no" 
+                           class="w-full bg-gray-100 rounded-lg shadow-sm border-gray-300 focus:ring-blue-500 focus:border-blue-500" 
+                           value="{{ $timetable->room_no ?? 'N/A' }}" readonly>
+                </div>
+
                 <!-- Appointment Form -->
-                <div class="row g-3 mb-4">
-                    <div class="col-md-6">
-                        <label for="appointment_date" class="form-label" style="color: #1814F3; font-weight: bold;">Date</label>
-                        <input type="date" id="appointment_date" name="appointment_date" class="form-control shadow-sm" style="border-radius: 10px;" required>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <label for="appointment_date" class="block text-blue-700 font-bold mb-1">Date</label>
+                        <input type="date" id="appointment_date" name="appointment_date" 
+                               class="w-full rounded-lg shadow-sm border-gray-300 focus:ring-blue-500 focus:border-blue-500" required>
                     </div>
-                    <div class="col-md-6">
-                        <label for="appointment_time" class="form-label" style="color: #1814F3; font-weight: bold;">Time</label>
-                        <input type="time" id="appointment_time" name="appointment_time" class="form-control shadow-sm" style="border-radius: 10px;" required>
+                    <div>
+                        <label for="appointment_time" class="block text-blue-700 font-bold mb-1">Time</label>
+                        <input type="time" id="appointment_time" name="appointment_time" 
+                               class="w-full rounded-lg shadow-sm border-gray-300 focus:ring-blue-500 focus:border-blue-500" required>
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    <label for="lecturer_name" class="form-label" style="color: #1814F3; font-weight: bold;">Lecturer Name</label>
-                    <input type="text" id="lecturer_name" name="lecturer_name" class="form-control bg-light shadow-sm" style="border-radius: 10px;" value="{{ $lecturer->name }}" readonly required>
+                <div class="mb-4">
+                    <label for="lecturer_name" class="block text-blue-700 font-bold mb-1">Lecturer Name</label>
+                    <input type="text" id="lecturer_name" name="lecturer_name" 
+                           class="w-full bg-gray-100 rounded-lg shadow-sm border-gray-300 focus:ring-blue-500 focus:border-blue-500" 
+                           value="{{ $lecturer->name }}" readonly required>
                 </div>
 
-                <div class="mb-3">
-                    <label for="appointment_type" class="form-label" style="color: #1814F3; font-weight: bold;">Reason</label>
-                    <input type="text" id="appointment_type" name="appointment_type" class="form-control shadow-sm" style="border-radius: 10px;" placeholder="Enter the reason for the appointment" required>
+                <div class="mb-4">
+                    <label for="appointment_type" class="block text-blue-700 font-bold mb-1">Reason</label>
+                    <input type="text" id="appointment_type" name="appointment_type" 
+                           class="w-full rounded-lg shadow-sm border-gray-300 focus:ring-blue-500 focus:border-blue-500" 
+                           placeholder="Enter the reason for the appointment" required>
                 </div>
 
                 <!-- Hidden Lecturer ID -->
                 <input type="hidden" name="lecturer_id" value="{{ $lecturer->id }}">
 
                 <!-- Submit and Back Buttons -->
-                <div class="d-flex justify-content-between mt-4">
-                    <button 
-                        type="submit" 
-                        class="btn" 
-                        style="background-color: #1814F3; color: white; font-weight: bold; padding: 10px 20px; border-radius: 20px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);"
-                        onmouseover="this.style.backgroundColor='#0f0eca';"
-                        onmouseout="this.style.backgroundColor='#1814F3';"
-                    >
+                <div class="flex justify-between items-center mt-6">
+                    <button type="submit" 
+                            class="bg-blue-700 text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-800 transition">
                         Save
                     </button>
                     
-                    <a 
-                        href="{{ route('search') }}" 
-                        class="btn"
-                        style="color: #1814F3; font-weight: bold; border: 2px solid #1814F3; padding: 10px 20px; border-radius: 20px; text-decoration: none; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);"
-                        onmouseover="this.style.backgroundColor='#1814F3'; this.style.color='white';"
-                        onmouseout="this.style.backgroundColor='transparent'; this.style.color='#1814F3';"
-                    >
+                    <a href="{{ route('search') }}" 
+                       class="text-blue-700 border border-blue-700 px-6 py-3 rounded-full hover:bg-blue-700 hover:text-white transition">
                         Back
                     </a>
                 </div>
@@ -93,4 +95,26 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Restrict date to today and later
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+
+    const minDate = `${yyyy}-${mm}-${dd}`;
+    document.getElementById('appointment_date').setAttribute('min', minDate);
+
+    // Confirmation alert on submit
+    document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // Prevent default form submission
+
+        // Show confirmation alert
+        alert('You have booked the appointment successfully.');
+
+        // Submit the form
+        this.submit();
+    });
+</script>
 @endsection

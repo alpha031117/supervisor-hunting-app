@@ -1,108 +1,142 @@
 @extends('layouts.master')
 
 @section('content')
-    <div class="container py-5">
-        <!-- Welcome Section -->
-        <div class="row mb-5 text-center">
-            <div class="col">
-                <h1 class="fw-bold" style="color: #1814F3;">Welcome, {{ auth()->user()->name }}!</h1>
-                <p class="text-muted fs-5">
-                    Ready to plan the upcoming term? Upload your timetable effortlessly below.
-                </p>
-            </div>
-        </div>
-
-        <!-- Form Section -->
-        <form action="{{ route('schedule.upload') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <div class="card shadow-lg border-0" 
-                         style="border-radius: 15px; background: linear-gradient(135deg, #FFFFFF, #F4F4F9);">
-                        <div class="card-body p-5">
-                            <!-- Creative Header -->
-                            <div class="text-center mb-4">
-                                <h3 class="fw-semibold" style="color: #1814F3;">Upload Your Timetable</h3>
-                                <p class="text-muted">Make sure it’s clear and accurate to help students schedule effectively.</p>
-                            </div>
-
-                            <!-- Name Display -->
-                            <div class="mb-4">
-                                <label for="name" class="form-label fw-bold" style="color: #1814F3;">Your Name</label>
-                                <input type="text" id="name" 
-                                       class="form-control shadow-sm" 
-                                       value="{{ auth()->user()->name }}" 
-                                       disabled 
-                                       style="border: 2px solid #1814F3; border-radius: 10px; background-color: #F9F9FF; color: #1814F3; font-weight: 600;">
-                            </div>
-
-                            <!-- Timetable Upload -->
-                            <div class="mb-4">
-                                <label for="schedule" class="form-label fw-bold" style="color: #1814F3;">Upload Your Timetable</label>
-
-                                <!-- Current File Section -->
-                                @if (isset($timetable) && $timetable->file_path)
-                                    <div class="alert alert-light border-1 shadow-sm d-flex align-items-center justify-content-between" 
-                                         style="background: #F1F5FF; color: #1814F3;">
-                                        <span>
-                                            <strong>Current File:</strong>
-                                            <a href="{{ asset('storage/' . $timetable->file_path) }}" 
-                                               target="_blank" 
-                                               class="text-decoration-none fw-bold" 
-                                               style="color: #1814F3;">
-                                                {{ basename($timetable->file_path) }}
-                                            </a>
-                                        </span>
-                                    </div>
-                                @endif
-
-                                <!-- Hidden Input -->
-                                <input type="hidden" id="uploaded_file" name="uploaded_file" 
-                                       value="{{ isset($timetable) ? basename($timetable->file_path) : '' }}">
-
-                                <!-- File Input -->
-                                <div class="file-upload-area mt-3" style="position: relative;">
-                                    <input type="file" id="schedule" name="schedule" 
-                                           class="form-control shadow-sm @error('schedule') is-invalid @enderror" 
-                                           style="border: 2px dashed #1814F3; border-radius: 10px; padding: 20px; background-color: #F9F9FF;">
-                                    <small class="text-muted d-block mt-2">Accepted formats: PDF, DOC, PNG. Max size: 2MB.</small>
-                                    @error('schedule')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <!-- Submit Button -->
-                            <div class="d-flex justify-content-center mt-4">
-                                <button type="submit" 
-                                        class="btn text-white fw-bold px-5 py-3"
-                                        style="
-                                            background: linear-gradient(135deg, #1814F3, #4540E6);
-                                            border-radius: 50px; 
-                                            box-shadow: 0px 10px 20px rgba(24, 20, 243, 0.2); 
-                                            transition: transform 0.3s ease;">
-                                    Upload Timetable
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
+<div class="container mx-auto py-10">
+    <!-- Welcome Section -->
+    <div class="text-center mb-10">
+        <h1 class="text-4xl font-extrabold" style="color: #1814F3;">Welcome, {{ auth()->user()->name }}!</h1>
+        <p class="text-gray-600 text-lg">Ready to plan the upcoming term? Upload your timetable effortlessly below.</p>
     </div>
 
-    <!-- Interactive Script -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const uploadButton = document.querySelector('button[type="submit"]');
-            uploadButton.addEventListener('mouseover', () => {
-                uploadButton.style.transform = 'scale(1.05)';
-            });
-            uploadButton.addEventListener('mouseout', () => {
-                uploadButton.style.transform = 'scale(1)';
-            });
+    <!-- Form Section -->
+    <form id="uploadForm" action="{{ route('schedule.upload') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white shadow-lg rounded-lg p-8">
+                <!-- Creative Header -->
+                <div class="text-center mb-6">
+                    <h3 class="text-2xl font-semibold" style="color: #1814F3;">Upload Your Timetable</h3>
+                    <p class="text-gray-500">Make sure it’s clear and accurate to help students schedule effectively.</p>
+                </div>
+
+                <!-- Name Display -->
+                <div class="mb-6">
+                    <label for="name" class="block text-lg font-bold mb-2" style="color: #1814F3;">Your Name</label>
+                    <input type="text" id="name" 
+                           class="w-full bg-blue-50 border-2 border-[#1814F3] rounded-lg shadow-sm px-4 py-3 text-[#1814F3] font-semibold" 
+                           value="{{ auth()->user()->name }}" 
+                           disabled>
+                </div>
+
+                <!-- Room Number Input -->
+                <div class="mb-6">
+                    <label for="room_no" class="block text-lg font-bold mb-2" style="color: #1814F3;">Room No</label>
+                    <input type="text" id="room_no" name="room_no" 
+                           class="w-full bg-blue-50 border-2 border-[#1814F3] rounded-lg shadow-sm px-4 py-3 text-[#1814F3] font-semibold @error('room_no') border-red-500 @enderror" 
+                           value="{{ old('room_no', $timetable->room_no ?? '') }}" 
+                           required>
+                    @error('room_no')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <!-- Timetable Upload -->
+                <div class="mb-6">
+                    <label for="schedule" class="block text-lg font-bold mb-2" style="color: #1814F3;">Upload Your Timetable</label>
+
+                    <!-- Current File Section -->
+                    @if (isset($timetable) && $timetable->file_path)
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-center justify-between text-[#1814F3] shadow-sm">
+                            <span>
+                                <strong>Current File:</strong>
+                                <a href="{{ asset('storage/' . $timetable->file_path) }}" 
+                                   target="_blank" 
+                                   class="underline font-bold hover:text-blue-700">
+                                    {{ basename($timetable->file_path) }}
+                                </a>
+                            </span>
+                        </div>
+                    @endif
+
+                    <!-- File Input -->
+                    <div class="mt-4 relative">
+                        <label class="flex flex-col items-center justify-center w-full h-20 bg-blue-50 border-2 border-dashed border-[#1814F3] rounded-lg cursor-pointer hover:bg-blue-100">
+                            <span class="text-sm text-gray-600">Click to upload or drag and drop</span>
+                            <span class="font-semibold text-gray-500">PDF, DOC, PNG (max: 2MB)</span>
+                            <input type="file" id="schedule" name="schedule" class="hidden @error('schedule') border-red-500 @enderror">
+                        </label>
+                        @error('schedule')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <!-- File Preview Section -->
+                    <div id="filePreview" class="mt-4">
+                        <!-- File name and optional preview will appear here -->
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="text-center mt-8">
+                    <button type="submit" 
+                            class="bg-gradient-to-r from-[#1814F3] to-[#4540E6] text-white font-bold px-10 py-3 rounded-full shadow-lg hover:scale-105 transition transform duration-300">
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Interactive Script -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const fileInput = document.getElementById('schedule');
+        const filePreview = document.getElementById('filePreview');
+
+        // File Input Change Event
+        fileInput.addEventListener('change', function () {
+            filePreview.innerHTML = ''; // Clear previous preview
+
+            const file = fileInput.files[0];
+            if (file) {
+                // Display the file name
+                const fileNameElement = document.createElement('p');
+                fileNameElement.textContent = `Selected file: ${file.name}`;
+                fileNameElement.classList.add('text-gray-700', 'font-semibold', 'mt-2');
+                filePreview.appendChild(fileNameElement);
+
+                // Preview for images
+                if (file.type.startsWith('image/')) {
+                    const imgPreview = document.createElement('img');
+                    imgPreview.src = URL.createObjectURL(file);
+                    imgPreview.style.maxWidth = '100%';
+                    imgPreview.style.maxHeight = '200px';
+                    imgPreview.classList.add('mt-4', 'border', 'rounded-lg');
+                    filePreview.appendChild(imgPreview);
+                }
+
+                // Preview for text/PDF files
+                if (file.type === 'application/pdf' || file.type.startsWith('text/')) {
+                    const textPreview = document.createElement('embed');
+                    textPreview.src = URL.createObjectURL(file);
+                    textPreview.type = file.type;
+                    textPreview.style.width = '100%';
+                    textPreview.style.height = '200px';
+                    textPreview.classList.add('mt-4', 'border', 'rounded-lg');
+                    filePreview.appendChild(textPreview);
+                }
+            }
         });
-    </script>
+
+        // Submit Button Hover Effect
+        const uploadButton = document.querySelector('button[type="submit"]');
+        uploadButton.addEventListener('mouseover', () => {
+            uploadButton.style.transform = 'scale(1.05)';
+        });
+        uploadButton.addEventListener('mouseout', () => {
+            uploadButton.style.transform = 'scale(1)';
+        });
+    });
+</script>
 @endsection

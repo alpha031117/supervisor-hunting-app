@@ -16,7 +16,8 @@ class ManageAppointmentController extends Controller
      */
     public function listAppointments(Request $request)
     {
-        $appointments = Appointment::where('student_id', Auth::id())->get();
+        $appointments = Appointment::where('student_id', Auth::id())->paginate(10);
+
         return view('ManageAppointment.ViewAppointmentStatus', compact('appointments'));
     }
 
@@ -169,21 +170,36 @@ class ManageAppointmentController extends Controller
     public function uploadSchedule(Request $request)
     {
         $request->validate([
-            'schedule' => 'required|file|mimes:pdf,doc,png|max:2048',
+            'schedule' => 'nullable|file|mimes:pdf,doc,png|max:2048', // Allow nullable schedule
+            'room_no' => 'required|string|max:50', // Validate room_no
         ]);
-
+    
+        // Default the file path to null
+        $filePath = null;
+    
+        // Check if a file is uploaded
         if ($request->hasFile('schedule')) {
             $file = $request->file('schedule');
+            $originalName = $file->getClientOriginalName();
             $filePath = $file->storeAs('schedules', $file->getClientOriginalName(), 'public');
-
-            Timetable::updateOrCreate(
-                ['lecturer_id' => Auth::id()],
-                ['file_path' => $filePath]
-            );
         }
-
+    
+        // Fetch the existing timetable or create a new one
+        $timetable = Timetable::firstOrNew(['lecturer_id' => Auth::id()]);
+    
+        // Update fields
+        if ($filePath) {
+            $timetable->file_path = $filePath;
+        }
+        $timetable->room_no = $request->input('room_no');
+    
+        // Save the record
+        $timetable->save();
+    
         return redirect()->back()->with('success', 'Timetable uploaded successfully!');
     }
+    
+
 
     /**
      * Show the upload timetable form for the lecturer.

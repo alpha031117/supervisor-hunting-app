@@ -20,6 +20,7 @@ Route::post('/applyappointment/{lecturer}', [ManageAppointmentController::class,
 Route::get('/applyappointment/{lecturer}', [ManageAppointmentController::class, 'showRequestForm'])->name('appointments.request');
 Route::post('/appointments', [ManageAppointmentController::class, 'store'])->name('appointments.store');
 Route::delete('/appointments/{id}', [ManageAppointmentController::class, 'cancelAppointment'])->name('appointments.cancel');
+Route::get('/appointments/{id}', [ManageAppointmentController::class, 'show'])->name('appointments.show');
 
  // Lecturer Routes
  Route::get('/lecturer/appointments', [ManageAppointmentController::class, 'lecturerAppointments'])->name('lecturer.appointments');
