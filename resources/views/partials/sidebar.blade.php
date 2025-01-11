@@ -1,87 +1,118 @@
-<aside class="w-64 bg-white shadow-lg">
-    <div class="p-4">
-        <div class="flex items-center space-x-2">
-            {{-- <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
-                </path>
-            </svg> --}}
-            <span class="text-3xl font-bold">FYP Hunt</span>
-        </div>
+<button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button"
+    class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+    <span class="sr-only">Open sidebar</span>
+    <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <path clip-rule="evenodd" fill-rule="evenodd"
+            d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z">
+        </path>
+    </svg>
+</button>
+
+<aside id="logo-sidebar"
+    class="fixed top-0 left-0 z-40 w-64 h-screen shadow-xl transition-transform -translate-x-full sm:translate-x-0"
+    aria-label="Sidebar">
+    <div class="h-full px-3 py-4 overflow-y-auto dark:bg-gray-800">
+        <a href="" class="flex items-center ps-2.5 mb-5">
+            <img src="{{ asset('images/icon.png') }}" class="h-10 w-10 me-3 sm:h-12 sm:w-12" alt="FYP Hunt Logo" />
+            <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">FYP Hunt</span>
+        </a>
+        <ul class="space-y-2 font-medium mt-10">
+            <li>
+                <a href="#"
+                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <x-heroicon-s-home
+                        class="w-7 h-7 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                    <span class="ms-3 text-gray-500 dark:text-gray-400 group-hover:text-gray-900">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('admin.user-list') }}"
+                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group  {{ Request::routeIs('admin.user-list') ? 'bg-blue-100' : '' }}">
+                    <x-heroicon-s-users
+                        class="w-7 h-7 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                    <span class="ms-3 text-gray-500 dark:text-gray-400 group-hover:text-gray-900">User</span>
+                </a>
+            </li>
+            <li>
+                <a href="#"
+                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <x-iconoir-graduation-cap-solid
+                        class="w-7 h-7 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                    <span class="ms-3 text-gray-500 dark:text-gray-400 group-hover:text-gray-900">Topic Approval</span>
+                </a>
+            </li>
+            <li>
+                <button type="button"
+                    class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                    aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                    <x-heroicon-s-calendar-date-range
+                        class="w-7 h-7 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                    <span class="ms-3 text-gray-500 dark:text-gray-400 group-hover:text-gray-900">Timeframe</span>
+                </button>
+                <ul id="dropdown-example"
+                    class="py-2 space-y-2 ml-1
+                    {{ Request::routeIs('set-timeframe', 'edit-timeframe') ? '' : 'hidden' }}">
+                    <li>
+                        <a href="{{ route('set-timeframe') }}"
+                            class="flex items-center w-full p-2 text-gray-500 transition duration-75 rounded-lg pl-11 group hover:text-gray-900 dark:text-white dark:hover:bg-gray-700
+                            {{ Request::routeIs('set-timeframe') ? 'bg-blue-100' : '' }}">
+                            Set Timeframe
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('edit-timeframe') }}"
+                            class="flex items-center w-full p-2 text-gray-500 transition duration-75 rounded-lg pl-11 group hover:text-gray-900 dark:text-white dark:hover:bg-gray-700
+                            {{ Request::routeIs('edit-timeframe') ? 'bg-blue-100' : '' }}">
+                            Edit Timeframe
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                @php
+                    // Retrieve the current user's role, or set it to an empty string if unauthenticated
+$role = Auth::user()->role ?? '';
+                @endphp
+
+                @if (in_array($role, ['student', 'lecturer']))
+                    <!-- If role is 'student' OR 'lecturer' -->
+                    <a href="{{ route('lecturer-quota-list') }}"
+                        class="flex items-center p-2 text-gray-900 rounded-lg
+                               dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <x-heroicon-c-list-bullet
+                            class="w-7 h-7 text-gray-500 transition duration-75
+                                   dark:text-gray-400 group-hover:text-gray-900
+                                   dark:group-hover:text-white" />
+                        <span class="ms-3 text-gray-500 dark:text-gray-400 group-hover:text-gray-900">
+                            Quota
+                        </span>
+                    </a>
+                @elseif ($role === 'coordinator')
+                    <!-- If role is 'coordinator' -->
+                    <a href="{{ route('manage-lecturer-quota') }}"
+                        class="flex items-center p-2 text-gray-900 rounded-lg
+                               dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{ Request::routeIs('manage-lecturer-quota') ? 'bg-blue-100' : '' }}">
+                        <x-heroicon-c-list-bullet
+                            class="w-7 h-7 text-gray-500 transition duration-75
+                                   dark:text-gray-400 group-hover:text-gray-900
+                                   dark:group-hover:text-white" />
+                        <span class="ms-3 text-gray-500 dark:text-gray-400 group-hover:text-gray-900">
+                            Quota
+                        </span>
+                    </a>
+                @endif
+            </li>
+            <li>
+                <form action="{{ route('auth.logout') }}" method="POST">
+                    @csrf
+                    <button type="submit"
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <x-tabler-logout
+                            class="w-7 h-7 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                        <span class="ms-3 text-gray-500 dark:text-gray-400 group-hover:text-gray-900">Logout</span>
+                    </button>
+                </form>
+            </li>
+        </ul>
     </div>
-
-    <nav class="mt-4">
-        <a href="#"
-            class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 {{ request()->routeIs('dashboard') ? 'bg-blue-50 text-blue-600' : '' }}">
-            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
-                </path>
-            </svg>
-            Dashboard
-        </a>
-
-        <a href="{{ route('admin.user-list') }}"
-            class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 {{ request()->routeIs('users') ? 'bg-blue-50 text-blue-600' : '' }}">
-            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-            </svg>
-            Manage User
-        </a>
-
-        <a href="#"
-            class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 {{ request()->routeIs('timeframe') ? 'bg-blue-50 text-blue-600' : '' }}">
-            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            Timeframe
-        </a>
-
-        <a href="#"
-            class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 {{ request()->routeIs('lecturers') ? 'bg-blue-50 text-blue-600' : '' }}">
-            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
-                </path>
-            </svg>
-            Assign Lecturer
-        </a>
-
-        <a href="#"
-            class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 {{ request()->routeIs('reports') ? 'bg-blue-50 text-blue-600' : '' }}">
-            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                </path>
-            </svg>
-            Report
-        </a>
-
-        <a href="#"
-            class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 {{ request()->routeIs('settings') ? 'bg-blue-50 text-blue-600' : '' }}">
-            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
-                </path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-            </svg>
-            Setting
-        </a>
-
-        <form id="logout-form" method="POST" action="{{ route('auth.logout') }}" style="display: none;">
-            @csrf
-        </form>
-        
-        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-           class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 {{ request()->routeIs('settings') ? 'bg-blue-50 text-blue-600' : '' }}">
-            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M10 19L3 12l7-7m4 14h7a2 2 0 002-2V5a2 2 0 00-2-2h-7"></path>
-            </svg>
-            Logout
-        </a>
-    </nav>
 </aside>

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
+use App\Models\LecturerQuota;
 use App\Models\Program;
 use App\Models\ResearchGroup;
 
@@ -38,86 +39,116 @@ class ManageUserController extends Controller
             'users' => $paginatedItems,
             'researchGroup' => $researchGroup
         ]);
+
     }
 
-    // Create user with bulk data by using csv file
+    // Create User Bulk
     public function createUserBulk(Request $request)
     {
         Log::info('Bulk User Creation Request Received');
         Log::info('Request Data: ' . json_encode($request->all()));
-
-        // Validate the request is csv or excel file
+    
         if (!$request->hasFile('dropzone-file') || !$request->file('dropzone-file')->isValid()) {
             return redirect()->route('admin.user-list')->with('error', 'Invalid file uploaded. Please upload a valid CSV file.');
         }
-
-        Log::info('Bulk User Creation Request: ' . $request->file('dropzone-file')->getClientOriginalName());
     
-        // Use getRealPath() to get the path
         $realPath = $request->file('dropzone-file')->getRealPath();
-
         if (!$realPath) {
             Log::error('Failed to retrieve the real path of the uploaded file.');
             return redirect()->route('admin.user-list')->with('error', 'Failed to process the uploaded file.');
         }
-
-        try {
-            // Get the file
-            $file = fopen($realPath, 'r');
     
+        try {
+            $file = fopen($realPath, 'r');
             $users = [];
+            $lecturerEmails = []; // Collect lecturer emails for quota processing
             $row = 0;
+    
             while (($data = fgetcsv($file)) !== false) {
                 $row++;
-
-                // Validate the data
-                if(count($data) !== 6) {
-                    fclose($file);
-                    return redirect()->route('admin.user-list')->with('error', 'Invalid CSV format. Each row must have name, email, password, program_id, role and academic_year.');
-                }
-
-                // Skip the header row (row 1)
                 if ($row === 1) {
-                    // Check if the header row matches the expected format
-                    if ($data[0] === 'name' && $data[1] === 'email' && $data[2] === 'password' && $data[3] === 'program_id' && $data[4] === 'role' && $data[5] === 'academic_year') {
-                        continue; // Skip the header row
+                    if ($data[0] === 'name' && $data[1] === 'email' && $data[2] === 'password' && $data[3] === 'pi/rg' && $data[4] === 'role' && $data[5] === 'academic_year') {
+                        Log::info('CSV header format is valid.');
+                        continue;
                     } else {
                         fclose($file);
-                        // Throw an error if the headers do not match
-                        return redirect()->route('user-list')->with('error', 'Invalid CSV header format. Each row must have name, email, program_id, role and academic_year.');
+                        return redirect()->route('admin.user-list')->with('error', 'Invalid CSV header format. Each row must have name, email, pi/rg, role and academic_year.');
                     }
                 }
-
-                $programId = (int) $data[3];
-                // Check if the program_id exists
-                if (!Program::where('id', $programId)->exists()) {
-                    fclose($file);
-                    return redirect()->route('admin.user-list')->with('error', "Program ID $programId does not exist.");
-                }
     
-                $users[] = [
-                    'name' => $data[0],
-                    'email' => $data[1],
-                    'password' => bcrypt($data[2]), // Default password
-                    'program_id' => $programId,
-                    'year' => $data[5],
-                    'first_login' => 1,
-                    'role' => $data[4],
-                    'created_at' => now(),
-                ];
+                $role = $data[4];
+                if ($role === 'student') {
+                    $programId = (int) $data[3];
+                    if (!Program::where('id', $programId)->exists()) {
+                        fclose($file);
+                        return redirect()->route('admin.user-list')->with('error', "Program ID $programId does not exist.");
+                    }
+    
+                    $users[] = [
+                        'name' => $data[0],
+                        'email' => $data[1],
+                        'password' => bcrypt($data[2]),
+                        'program_id' => $programId,
+                        'year' => $data[5],
+                        'first_login' => 1,
+                        'role' => $role,
+                        'created_at' => now(),
+                    ];
+                } else {
+                    $researchGroupId = (int) $data[3];
+                    if (!Program::where('id', $researchGroupId)->exists()) {
+                        fclose($file);
+                        return redirect()->route('admin.user-list')->with('error', "Research Group ID $researchGroupId does not exist.");
+                    }
+    
+                    $users[] = [
+                        'name' => $data[0],
+                        'email' => $data[1],
+                        'password' => bcrypt($data[2]),
+                        'research_group_id' => $researchGroupId,
+                        'year' => $data[5],
+                        'first_login' => 1,
+                        'role' => $role,
+                        'created_at' => now(),
+                    ];
+    
+                    $lecturerEmails[] = [
+                        'email' => $data[1],
+                        'semester' => 'Semester' . $data[5],
+                    ];
+                }
             }
             fclose($file);
     
-            // Insert users
+            // Insert users into the database
             User::insert($users);
+    
+            // Process lecturer quotas
+            $lecturer_quota = [];
+            foreach ($lecturerEmails as $lecturerData) {
+                $lecturer = User::where('email', $lecturerData['email'])->first();
+                if ($lecturer) {
+                    $lecturer_quota[] = [
+                        'semester' => $lecturerData['semester'],
+                        'lecturer_id' => $lecturer->id,
+                        'total_quota' => 0,
+                        'remaining_quota' => 0,
+                        'created_at' => now(),
+                    ];
+                }
+            }
+    
+            if (!empty($lecturer_quota)) {
+                LecturerQuota::insert($lecturer_quota);
+            }
     
             return redirect()->route('admin.user-list')->with('success', 'Users created successfully.');
         } catch (\Exception $e) {
-            // Log error for debugging
             Log::error('Bulk User Creation Error: ' . $e->getMessage());
             return redirect()->route('admin.user-list')->with('error', 'Failed to create users. Please try again.');
         }
     }
+    
 
     // Update Research Group
     public function updateResearchGroup(Request $request)

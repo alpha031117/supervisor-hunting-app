@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\ManageTimeframeAndQuota\QuotaController;
 use App\Http\Controllers\ManageUser\AuthenticatedSessionController;
 use App\Http\Controllers\ManageUser\ManageUserController;
+use App\Http\Controllers\ManageTimeframeAndQuota\TimeframeController;
 use App\Http\Controllers\ManageTitle\TitleController;
 use Illuminate\Support\Facades\Route;
 
@@ -11,6 +13,29 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware('auth')->group(function () {
+    // Reset Password
+    Route::get('/reset-password', [AuthenticatedSessionController::class, 'resetPassword'])
+        ->name('auth.reset-password');
+
+    // Confirm Password
+    Route::post('/store-session', [AuthenticatedSessionController::class, 'store_session'])
+        ->name('auth.store-session');
+
+    Route::get('/confirm-password', [AuthenticatedSessionController::class, 'retypePassword'])
+        ->name('auth.confirm-password');
+
+    Route::post('/update-password', [AuthenticatedSessionController::class, 'updatePassword'])
+        ->name('auth.update-password');
+
+    // User Report
+    Route::get('/user-report', [ManageUserController::class, 'displayUserReport'])
+        ->name('admin.user-report');
+
+    // Success Reset Password
+    Route::get('/success-reset-password', function () {
+        return view('ManageUser.reset-successful');
+    })->name('auth.success-reset-password');
+
     // Coordinator
     Route::middleware('checkrole:coordinator')->group(function () {
         // Dashboard
@@ -52,7 +77,6 @@ Route::middleware('auth')->group(function () {
     })->name('student.dashboard');
 });
 
-// Authenticated Session
 // Login
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])
     ->name('login');
@@ -84,9 +108,3 @@ Route::middleware('auth')->group(function () {
     })
         ->name('auth.success-reset-password');
 });
-
-
-//Apply Title Module
-//Student
-
-Route::get('/ProposalList', [TitleController::class, 'accessdb']);
