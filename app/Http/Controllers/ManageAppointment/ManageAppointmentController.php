@@ -8,19 +8,58 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Appointment;
 use App\Models\Timetable;
 use App\Models\User;
+use Carbon\Carbon;
+
 
 class ManageAppointmentController extends Controller
 {
     /**
      * List all appointments for the authenticated student.
      */
+    // public function listAppointments(Request $request)
+    // {
+    //     $appointments = Appointment::where('student_id', Auth::id())->paginate(10);
+
+    //     return view('ManageAppointment.ViewAppointmentStatus', compact('appointments'));
+    // }
     public function listAppointments(Request $request)
     {
-        $appointments = Appointment::where('student_id', Auth::id())->paginate(10);
-
+        $userId = Auth::id();
+        $today = \Carbon\Carbon::now();
+        $tomorrow = $today->copy()->addDay();
+    
+        // Fetch all appointments for the authenticated student
+        $appointments = Appointment::where('student_id', $userId)
+            ->paginate(10);
+    
+        // Check for approved appointments scheduled for tomorrow
+        $upcomingAppointments = Appointment::where('student_id', $userId)
+            ->where('status', 'Approved') // Only approved appointments
+            ->whereDate('appointment_date', $tomorrow->toDateString())
+            ->get();
+    
+        // Flash reminder message for approved appointments if not already shown
+        if ($upcomingAppointments->isNotEmpty() && !session()->has('reminderShown')) {
+            $reminderMessage = '<div style="text-align: left;"><strong>Appointment Notification:</strong> You have an upcoming scheduled appointment tomorrow.';
+            foreach ($upcomingAppointments as $appointment) {
+                $reminderMessage .= '<br><br><strong>Details:</strong><br> Appointment with <span style="color: #1814F3; font-weight: bold;">' 
+                    . $appointment->lecturer->name 
+                    . '</span> at <strong>' 
+                    . \Carbon\Carbon::parse($appointment->appointment_time)->format('g:i A') 
+                    . '</strong>.<br> Please ensure that you are prepared and arrive on time.';
+            }
+            $reminderMessage .= '</div>';
+    
+            session()->flash('reminder', $reminderMessage);
+            session()->put('reminderShown', true); // Set the session variable
+        }
+    
         return view('ManageAppointment.ViewAppointmentStatus', compact('appointments'));
     }
+    
 
+
+    
     /**
      * Show the request form to apply for an appointment with a specific lecturer.
      */
@@ -94,17 +133,54 @@ class ManageAppointmentController extends Controller
         return view('ManageAppointment.ShowAppointment', compact('appointment'));
     }
 
-    /**
-     * List all appointments for the authenticated lecturer.
-     */
-    public function lecturerAppointments(Request $request)
-    {
-        $appointments = Appointment::where('lecturer_id', Auth::id())
-            ->orderBy('appointment_date', 'asc')
-            ->paginate(10);
+    public function lecturerAppointments()
+{
+    $lecturerId = Auth::id();
 
-        return view('ManageAppointment.ResponseAppointment', compact('appointments'));
+    // Fetch pending and approved appointments for the lecturer
+    $pendingAppointments = Appointment::with('student')
+        ->where('lecturer_id', $lecturerId)
+        ->where('status', 'Pending')
+        ->orderBy('appointment_date', 'asc')
+        ->get();
+
+    $approvedAppointments = Appointment::with('student')
+        ->where('lecturer_id', $lecturerId)
+        ->where('status', 'Approved')
+        ->orderBy('appointment_date', 'asc')
+        ->get();
+
+    // Identify appointments scheduled for tomorrow
+    $tomorrow = Carbon::now()->timezone('Asia/Kuala_Lumpur')->addDay()->startOfDay()->toDateString();
+    $upcomingAppointments = $approvedAppointments->filter(function ($appointment) use ($tomorrow) {
+        return Carbon::parse($appointment->appointment_date)->toDateString() === $tomorrow;
+    });
+
+    // Generate reminder message if there are appointments tomorrow
+    if ($upcomingAppointments->isNotEmpty()) {
+        $reminderMessage = '<strong>Appointment Notification:</strong> You have approved appointments scheduled for tomorrow:<br>';
+        foreach ($upcomingAppointments as $appointment) {
+            $reminderMessage .= '<br><strong>Appointment with:</strong> <span style="color: #1814F3; font-weight: bold;">' 
+                . $appointment->student->name 
+                . '</span><br><strong>Time:</strong> ' 
+                . Carbon::parse($appointment->appointment_time)->format('g:i A') 
+                . '<br>';
+        }
+
+        // Flash the reminder message to the session
+        session()->flash('reminder', $reminderMessage);
     }
+
+    // Return the view with both pending and approved appointments
+    return view('ManageAppointment.ResponseAppointment', compact('pendingAppointments', 'approvedAppointments'));
+}
+
+
+
+    
+    
+    
+
 
     /**
      * Show pending and approved appointments for the lecturer.

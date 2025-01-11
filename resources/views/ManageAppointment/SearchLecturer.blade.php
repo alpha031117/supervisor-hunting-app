@@ -5,7 +5,7 @@
 <div class="container mx-auto my-10">
     <!-- Header Section -->
     <div class="text-center mb-10">
-        <h1 class="text-4xl font-extrabold" style="color: #1814F3;">Search Your Lecturer</h1>
+        <h1 class="text-4xl font-extrabold text-blue-600">Search Your Lecturer</h1>
         <p class="text-lg text-gray-500 mt-2">Find and book appointments with your lecturers quickly.</p>
     </div>
 
@@ -22,8 +22,7 @@
                         value="{{ $search }}">
                     <button 
                         type="submit" 
-                        class="text-white font-semibold rounded-full px-6 py-2 text-sm hover:shadow-lg transition"
-                        style="background-color: #1814F3;">
+                        class="text-white font-semibold rounded-full px-6 py-2 text-sm hover:shadow-lg transition bg-blue-600">
                         Search
                     </button>
                 </form>
@@ -33,14 +32,13 @@
 
     <!-- Table Section -->
     <div class="bg-white shadow-lg rounded-lg">
-        <div class="text-white font-bold rounded-t-lg px-6 py-4"
-             style="background-color: #1814F3;">
+        <div class="text-white font-bold rounded-t-lg px-6 py-4 bg-blue-600">
             Lecturer Directory
         </div>
         <div class="p-6">
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
-                    <thead class="bg-gray-100 text-gray-700 text-sm uppercase font-semibold">
+                    <thead class="bg-gray-100 text-gray-600 text-sm uppercase font-semibold">
                         <tr>
                             <th class="px-6 py-3">Lecturer Name</th>
                             <th class="px-6 py-3">Email</th>
@@ -56,8 +54,7 @@
                                     <td class="px-6 py-3 text-center">
                                         <a 
                                             href="{{ route('applyappointment.create', ['lecturer' => $lecturer->id]) }}" 
-                                            class="inline-block text-white text-sm font-semibold rounded-full px-4 py-2 hover:shadow-md transition"
-                                            style="background-color: #1814F3;">
+                                            class="inline-block text-white text-sm font-semibold rounded-full px-4 py-2 hover:shadow-md transition bg-blue-600">
                                             Book Appointment
                                         </a>
                                     </td>

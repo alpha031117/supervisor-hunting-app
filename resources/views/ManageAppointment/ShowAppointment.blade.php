@@ -4,56 +4,56 @@
 <div class="container mx-auto my-10">
     <!-- Header Section -->
     <div class="text-center mb-10">
-        <h1 class="text-4xl font-extrabold" style="color: #1814F3;">Appointment Details</h1>
+        <h1 class="text-4xl font-extrabold text-blue-600">Appointment Details</h1>
         <p class="text-gray-600 text-lg">Review your appointment information and take the necessary actions.</p>
     </div>
 
     <!-- Appointment Details Section -->
     <div class="bg-white shadow-lg rounded-lg border border-gray-200">
-        <div class="bg-[#1814F3] text-white font-bold px-6 py-4 rounded-t-lg">
+        <div class="bg-blue-600 text-white font-bold px-6 py-4 rounded-t-lg">
             Appointment Information
         </div>
         <div class="p-6">
             <!-- Appointment Details -->
-            <h4 class="text-xl font-bold mb-5 flex items-center gap-2" style="color: #1814F3;">
+            <h4 class="text-xl font-bold mb-5 flex items-center gap-2 text-blue-600">
                 <i class="bi bi-person-circle"></i> {{ $appointment->lecturer->name }}
             </h4>
             <ul class="space-y-4 text-lg">
                 <!-- Reason -->
                 <li class="flex items-center">
-                    <i class="bi bi-chat-left-text text-[#1814F3] mr-3"></i>
+                    <i class="bi bi-chat-left-text text-blue-600 mr-3"></i>
                     <strong>Reason:</strong> <span class="ml-2">{{ $appointment->reason }}</span>
                 </li>
 
                 <!-- Date -->
                 <li class="flex items-center">
-                    <i class="bi bi-calendar2-week text-[#1814F3] mr-3"></i>
+                    <i class="bi bi-calendar2-week text-blue-600 mr-3"></i>
                     <strong>Date:</strong> <span class="ml-2">{{ $appointment->appointment_date }}</span>
                 </li>
 
                 <!-- Time -->
                 <li class="flex items-center">
-                    <i class="bi bi-clock text-[#1814F3] mr-3"></i>
+                    <i class="bi bi-clock text-blue-600 mr-3"></i>
                     <strong>Time:</strong> <span class="ml-2">{{ \Carbon\Carbon::parse($appointment->appointment_time)->format('g:i A') }}</span>
                 </li>
 
                 <!-- Room No -->
                 <li class="flex items-center">
-                    <i class="bi bi-door-open text-[#1814F3] mr-3"></i>
+                    <i class="bi bi-door-open text-blue-600 mr-3"></i>
                     <strong>Room No:</strong> <span class="ml-2">{{ $appointment->lecturer->timetable->room_no ?? 'N/A' }}</span>
                 </li>
 
                 <!-- Status -->
                 <li class="flex items-center">
-                    <i class="bi bi-flag text-[#1814F3] mr-3"></i>
+                    <i class="bi bi-flag text-blue-600 mr-3"></i>
                     <strong>Status:</strong>
                     <span class="ml-2">
                         @if ($appointment->status == 'Pending')
-                            <span class="bg-yellow-200 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium">Pending</span>
+                            <span class="bg-yellow-200 text-yellow-600 px-3 py-1 rounded-full text-sm font-medium">Pending</span>
                         @elseif ($appointment->status == 'Approved')
-                            <span class="bg-green-200 text-green-800 px-3 py-1 rounded-full text-sm font-medium">Approved</span>
+                            <span class="bg-green-200 text-green-600 px-3 py-1 rounded-full text-sm font-medium">Approved</span>
                         @else
-                            <span class="bg-red-200 text-red-800 px-3 py-1 rounded-full text-sm font-medium">Rejected</span>
+                            <span class="bg-red-200 text-red-600 px-3 py-1 rounded-full text-sm font-medium">Rejected</span>
                         @endif
                     </span>
                 </li>
@@ -64,7 +64,7 @@
     <!-- Actions -->
     <div class="mt-8 flex justify-between">
         <a href="{{ route('appointments.myAppointments') }}"
-           class="text-[#1814F3] border border-[#1814F3] px-6 py-2 rounded-full hover:bg-[#1814F3] hover:text-white transition">
+           class="text-blue-600 border border-blue-600 px-6 py-2 rounded-full hover:bg-blue-600 hover:text-white transition">
             <i class="bi bi-arrow-left"></i> Back to Appointments
         </a>
 
@@ -88,7 +88,7 @@
                 </p>
                 <div class="flex justify-end gap-4">
                     <button
-                        class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition"
+                        class="bg-gray-300 text-gray-600 px-4 py-2 rounded-lg hover:bg-gray-400 transition"
                         data-modal-close="#cancelModal">Close</button>
                     <form id="cancel-form"
                           action="{{ route('appointments.cancel', $appointment->id) }}"
