@@ -57,11 +57,11 @@ class QuotaController extends Controller
      */
     public function displayLecturerQuota()
     {
-        // Retrieve lecturer data with program and quotas
-        $lecturers = LecturerQuota::with(['lecturer.program', 'supervisorHuntingPeriod'])
-            ->get();
+        // Retrieve lecturer data with program, quotas, and semester
+        $lecturers = LecturerQuota::with(['lecturer.program', 'supervisorHuntingPeriod'])->get();
+        $semesters = SupervisorHuntingPeriod::select('semester')->distinct()->pluck('semester');
 
-        return view('ManageTimeframeAndQuota.lecturer-quota-list', compact('lecturers'));
+        return view('ManageTimeframeAndQuota.lecturer-quota-list', compact('lecturers', 'semesters'));
     }
 
     /**
