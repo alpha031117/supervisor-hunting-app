@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ManageUser\AuthenticatedSessionController;
 use App\Http\Controllers\ManageUser\ManageUserController;
+use App\Http\Controllers\ManageTitle\TitleController;
 use Illuminate\Support\Facades\Route;
 
 // Create route here
@@ -19,25 +20,25 @@ Route::middleware('auth')->group(function () {
 
         // User List
         Route::get('/user-list', [ManageUserController::class, 'displayUserList'])
-        ->name('admin.user-list');
+            ->name('admin.user-list');
 
         // Create User Bulk
         Route::post('/create-user-bulk', [ManageUserController::class, 'createUserBulk'])
-        ->name('admin.create-user-bulk');
+            ->name('admin.create-user-bulk');
 
         // Update Research Group
         Route::post('/update-research-group', [ManageUserController::class, 'updateResearchGroup'])
-        ->name('admin.update-research-group');
-        
+            ->name('admin.update-research-group');
+
         // User Report
         Route::get('/user-report', [ManageUserController::class, 'displayUserReport'])
-        ->name('admin.user-report');
+            ->name('admin.user-report');
 
         Route::post('/admin/filter-data', [ManageUserController::class, 'filterData'])
-        ->name('admin.filter-data');
+            ->name('admin.filter-data');
 
         Route::post('/admin/filter-data-all', [ManageUserController::class, 'displayFilteredUser'])
-        ->name('admin.filter-data-all');
+            ->name('admin.filter-data-all');
     });
 
     // Lecturer
@@ -58,7 +59,7 @@ Route::get('/login', [AuthenticatedSessionController::class, 'create'])
 
 // Authenticate
 Route::post('login', [AuthenticatedSessionController::class, 'store'])
-->name('auth.login');
+    ->name('auth.login');
 
 // Logout
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
@@ -81,9 +82,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/success-reset-password', function () {
         return view('ManageUser.reset-successful');
     })
-    ->name('auth.success-reset-password');
+        ->name('auth.success-reset-password');
 });
 
 
+//Apply Title Module
+//Student
 
-
+Route::get('/ProposalList', [TitleController::class, 'accessdb']);
