@@ -129,28 +129,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('lecturer_id')->constrained('users')->cascadeOnDelete();
             $table->string('file_path');
-        
-
-            $table->timestamps();
-        });
-
-        // 10) Create the 'appointment_requests' table
-        Schema::create('appointment_requests', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('student_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('lecturer_id')->constrained('users')->cascadeOnDelete();
-            $table->date('requested_date');
-            $table->time('requested_time');
-            $table->enum('status', ['Pending', 'Approved', 'Rejected'])->default('Pending');
-            $table->timestamps();
-        });
-
-        // 11) Create the 'reminders' table
-        Schema::create('reminders', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('appointment_id')->constrained('appointments')->cascadeOnDelete();
-            $table->date('reminder_date');
-            $table->enum('reminder_status', ['Sent', 'Pending'])->default('Pending');
+            $table->string('room_no');
             $table->timestamps();
         });
 
@@ -179,8 +158,6 @@ return new class extends Migration
     {
         // Drop in the reverse order, ensuring that referencing tables
         // are dropped first (lecturer_quotas before supervisor_hunting_periods).
-        Schema::dropIfExists('reminders');
-        Schema::dropIfExists('appointment_requests');
         Schema::dropIfExists('timetables');
         Schema::dropIfExists('appointments');
         Schema::dropIfExists('notifications');

@@ -114,14 +114,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/lecturer-quota-report', [QuotaController::class, 'displayQuotaReport'])
             ->name('lecturer-quota-report');
 
-        Route::post('/admin/filter-by-semester', [QuotaController::class, 'filterBySemester'])
-            ->name('filter-by-semester');
-
         Route::delete('/delete-timeframe/{id}', [TimeframeController::class, 'deleteTimeframe'])
             ->name('delete-timeframe');
-
-        Route::get('/filter-lecturer-quota', [QuotaController::class, 'filterBySemesterForQuota'])
-            ->name('filter-lecturer-quota');
     });
 
     // Lecturer
@@ -150,3 +144,6 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
 // Route to display the lecturer quota list
 Route::get('/lecturer-quota-list', [QuotaController::class, 'displayLecturerQuota'])
     ->name('lecturer-quota-list');
+
+Route::get('/filter-lecturer-quota', [QuotaController::class, 'filterBySemester'])
+    ->name('filter-lecturer-quota');
