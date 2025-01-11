@@ -43,6 +43,7 @@
                         <th scope="col" class="px-6 py-3">Name</th>
                         <th scope="col" class="px-6 py-3">Email</th>
                         <th scope="col" class="px-6 py-3">Program</th>
+                        <th scope="col" class="px-6 py-3 text-center">Semester</th>
                         <th scope="col" class="px-6 py-3 text-center">Total Quota</th>
                     </tr>
                 </thead>
@@ -52,9 +53,9 @@
                             <td class="px-6 py-4 text-center">{{ $index + 1 }}</td>
                             <td class="px-6 py-4">{{ $lecturer->lecturer->name }}</td>
                             <td class="px-6 py-4">{{ $lecturer->lecturer->email }}</td>
-                            <td class="px-6 py-4">
-                                {{ $lecturer->lecturer->program->name ?? 'N/A' }}
-                            </td>
+                            <td class="px-6 py-4"> {{ $lecturer->lecturer->program->name ?? 'N/A' }} </td>
+                            <td class="px-6 py-4 text-center">{{ $lecturer->supervisorHuntingPeriod->semester ?? 'N/A' }}
+
                             <td class="px-6 py-4 text-center">{{ $lecturer->total_quota }}</td>
                         </tr>
                     @empty
