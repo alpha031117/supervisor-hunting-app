@@ -43,7 +43,7 @@ return new class extends Migration
                 ->constrained('research_groups')
                 ->nullOnDelete();
             $table->boolean('first_login')->default(true);
-            $table->string('role', 50);
+            $table->string('role')->default('student'); 
             $table->timestamps();
             $table->rememberToken();
         });
