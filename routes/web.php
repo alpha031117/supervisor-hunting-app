@@ -108,3 +108,10 @@ Route::middleware('auth')->group(function () {
     })
         ->name('auth.success-reset-password');
 });
+
+
+
+//Apply Title Module
+//Student
+
+Route::get('/ProposalList', [TitleController::class, 'accessdb']);
