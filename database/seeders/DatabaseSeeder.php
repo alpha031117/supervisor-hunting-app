@@ -141,30 +141,7 @@ class DatabaseSeeder extends Seeder
             [
                 'lecturer_id' => 2,
                 'file_path' => 'uploads/timetables/timetable_lecturer_2.pdf',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
-
-        // Create appointment requests
-        AppointmentRequest::insert([
-            [
-                'student_id' => 3,
-                'lecturer_id' => 2,
-                'requested_date' => '2025-01-20',
-                'requested_time' => '11:00:00',
-                'status' => 'Pending',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
-
-        // Create reminders
-        Reminder::insert([
-            [
-                'appointment_id' => 1,
-                'reminder_date' => '2025-01-14',
-                'reminder_status' => 'Pending',
+                'room_no' => '101',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
