@@ -53,15 +53,6 @@
                         <span class="text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white">
                             Manage Appointment
                         </span>
-                        <svg 
-                            class="w-4 h-4 ml-auto transform transition-transform text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
-                            :class="open ? 'rotate-180' : ''" 
-                            xmlns="http://www.w3.org/2000/svg" 
-                            fill="currentColor" 
-                            viewBox="0 0 24 24"
-                        >
-                            <path d="M19 9l-7 7-7-7"></path>
-                        </svg>
                     </button>
             
                     <!-- Dropdown menu -->

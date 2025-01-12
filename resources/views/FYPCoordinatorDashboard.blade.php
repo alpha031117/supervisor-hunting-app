@@ -10,7 +10,7 @@
 @endsection
 
 @section('content')
-    <x-button :route="route('home')">
+    {{-- <x-button :route="route('home')">
         Go to Dashboard
-    </x-button>
+    </x-button> --}}
 @endsection
