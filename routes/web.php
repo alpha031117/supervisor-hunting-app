@@ -7,32 +7,28 @@ use App\Http\Controllers\ManageAppointment\ManageAppointmentController;
 use App\Http\Controllers\ManageTimeframeAndQuota\TimeframeController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-// Create route here
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
 
 // Auth::routes(['verify' => true]);
 Route::middleware(['auth:sanctum'])->group(function () {
 
-Route::get('/my-appointments', [ManageAppointmentController::class, 'listAppointments'])->name('appointments.myAppointments');
-Route::post('/applyappointment/{lecturer}', [ManageAppointmentController::class, 'create'])->name('applyappointment.create');
-Route::get('/applyappointment/{lecturer}', [ManageAppointmentController::class, 'showRequestForm'])->name('appointments.request');
-Route::post('/appointments', [ManageAppointmentController::class, 'store'])->name('appointments.store');
-Route::delete('/appointments/{id}', [ManageAppointmentController::class, 'cancelAppointment'])->name('appointments.cancel');
-Route::get('/appointments/{id}', [ManageAppointmentController::class, 'show'])->name('appointments.show');
+    Route::get('/my-appointments', [ManageAppointmentController::class, 'listAppointments'])->name('appointments.myAppointments');
+    Route::post('/applyappointment/{lecturer}', [ManageAppointmentController::class, 'create'])->name('applyappointment.create');
+    Route::get('/applyappointment/{lecturer}', [ManageAppointmentController::class, 'showRequestForm'])->name('appointments.request');
+    Route::post('/appointments', [ManageAppointmentController::class, 'store'])->name('appointments.store');
+    Route::delete('/appointments/{id}', [ManageAppointmentController::class, 'cancelAppointment'])->name('appointments.cancel');
+    Route::get('/appointments/{id}', [ManageAppointmentController::class, 'show'])->name('appointments.show');
 
- // Lecturer Routes
- Route::get('/lecturer/appointments', [ManageAppointmentController::class, 'lecturerAppointments'])->name('lecturer.appointments');
- Route::get('/response-appointment', [ManageAppointmentController::class, 'responseAppointment'])->name('lecturer.responseAppointment');
- Route::post('/lecturer/appointments/{id}/approve', [ManageAppointmentController::class, 'approveAppointment'])->name('approveAppointment');
- Route::post('/lecturer/appointments/{id}/reject', [ManageAppointmentController::class, 'rejectAppointment'])->name('rejectAppointment');
+    // Lecturer Routes
+    Route::get('/lecturer/appointments', [ManageAppointmentController::class, 'lecturerAppointments'])->name('lecturer.appointments');
+    Route::get('/response-appointment', [ManageAppointmentController::class, 'responseAppointment'])->name('lecturer.responseAppointment');
+    Route::post('/lecturer/appointments/{id}/approve', [ManageAppointmentController::class, 'approveAppointment'])->name('approveAppointment');
+    Route::post('/lecturer/appointments/{id}/reject', [ManageAppointmentController::class, 'rejectAppointment'])->name('rejectAppointment');
 
- // Upload Routes
- Route::get('/upload', [ManageAppointmentController::class, 'showUploadForm'])->name('schedule.upload.form');
- Route::post('/upload', [ManageAppointmentController::class, 'uploadSchedule'])->name('schedule.upload');
+    // Upload Routes
+    Route::get('/upload', [ManageAppointmentController::class, 'showUploadForm'])->name('schedule.upload.form');
+    Route::post('/upload', [ManageAppointmentController::class, 'uploadSchedule'])->name('schedule.upload');
 
- Route::get('/search', [ManageAppointmentController::class, 'search'])->name('search');
+    Route::get('/search', [ManageAppointmentController::class, 'search'])->name('search');
 
 });
 
@@ -130,7 +126,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // Login
-Route::get('/login', [AuthenticatedSessionController::class, 'create'])
+Route::get('/', [AuthenticatedSessionController::class, 'create'])
     ->name('login');
 
 // Authenticate
