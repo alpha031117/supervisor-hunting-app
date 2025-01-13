@@ -29,7 +29,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/upload', [ManageAppointmentController::class, 'uploadSchedule'])->name('schedule.upload');
 
     Route::get('/search', [ManageAppointmentController::class, 'search'])->name('search');
-
 });
 
 
@@ -86,8 +85,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/admin/filter-data-all', [ManageUserController::class, 'displayFilteredUser'])
             ->name('admin.filter-data-all');
 
-        // Route::get('/set-timeframe', [TimeframeController::class, 'setTimeframe'])
-        //     ->name('set-timeframe');
+        Route::get('/set-timeframe', [TimeframeController::class, 'setTimeframe'])
+            ->name('set-timeframe');
 
         Route::post('/store-timeframe', [TimeframeController::class, 'storeTimeframe'])
             ->name('store-timeframe');
@@ -104,8 +103,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/save-lecturer-quota/{lecturer_id}', [QuotaController::class, 'saveQuota'])
             ->name('save-lecturer-quota');
 
-        // Route::get('/admin/quota-data', [QuotaController::class, 'getQuotaData'])
-        //     ->name('lecturer-quota-report');
+        Route::get('/admin/quota-data', [QuotaController::class, 'getQuotaData'])
+            ->name('lecturer-quota-report');
 
         Route::get('/lecturer-quota-report', [QuotaController::class, 'displayQuotaReport'])
             ->name('lecturer-quota-report');
