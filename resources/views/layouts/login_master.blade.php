@@ -17,7 +17,9 @@
     </main>
 
     <!-- Footer -->
-    @include('partials.footer')
+    <footer class="text-black text-center py-4 fixed bottom-0 left-0 w-full">
+        <p>&copy; {{ date('Y') }} FYP Hunt. All rights reserved.</p>
+    </footer>
 </body>
 
 @yield('scripts')

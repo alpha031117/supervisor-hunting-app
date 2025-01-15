@@ -9,12 +9,21 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class AuthenticatedSessionController extends Controller
 {
     // Display the login view.
     public function create()
     {
+            // Enable query log
+        DB::enableQueryLog();
+
+        // Example of a database query (fetch some records)
+        $users = DB::table('users')->get();
+
+        // Log the queries
+        Log::info(DB::getQueryLog());
         return view('ManageUser.login');
     }
 

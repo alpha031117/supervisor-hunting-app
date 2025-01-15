@@ -31,12 +31,19 @@
                 </button>
             </div>
 
-            <!-- Right: Generate Report Button -->
-            <a href="{{ route('lecturer-quota-report') }}"
-                class="border border-blue-500 text-blue-500 px-4 py-2 rounded-lg bg-white hover:bg-blue-50">
-                Generate Report
-            </a>
+            <!-- Right Group: View Quota & Generate Report Buttons -->
+            <div class="flex space-x-4">
+                <a href="{{ route('lecturer-quota-list') }}"
+                    class="border border-blue-500 text-blue-500 px-4 py-2 rounded-lg bg-white hover:bg-blue-50">
+                    View Quota
+                </a>
+                <a href="{{ route('lecturer-quota-report') }}"
+                    class="border border-blue-500 text-blue-500 px-4 py-2 rounded-lg bg-white hover:bg-blue-50">
+                    Generate Report
+                </a>
+            </div>
         </div>
+
 
         <!-- Table -->
         <div class="overflow-x-auto">
