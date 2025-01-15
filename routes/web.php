@@ -4,6 +4,7 @@ use App\Http\Controllers\ManageTimeframeAndQuota\QuotaController;
 use App\Http\Controllers\ManageUser\AuthenticatedSessionController;
 use App\Http\Controllers\ManageUser\ManageUserController;
 use App\Http\Controllers\ManageTimeframeAndQuota\TimeframeController;
+use App\Http\Controllers\ManageTitle\ManageTitleController;
 use App\Http\Controllers\ManageTitle\TitleController;
 use Illuminate\Support\Facades\Route;
 
@@ -114,4 +115,5 @@ Route::middleware('auth')->group(function () {
 //Apply Title Module
 //Student
 
-Route::get('/ProposalList', [TitleController::class, 'accessdb']);
+//Route::get('/ProposalList', [TitleController::class, 'accessdb']);
+Route::get('/ProposalList', [ManageTitleController::class, 'DisplayProposalList']);
