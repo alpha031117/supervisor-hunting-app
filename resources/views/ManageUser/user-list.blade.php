@@ -3,7 +3,7 @@
 @section('page', 'Manage User')
 
 @section('breadcrumbs')
-    <a href="{{ route('home')}}" class="hover:text-blue-600"><li>FYP Hunt</li></a>
+    <a href="{{ route('coordinator.dashboard')}}" class="hover:text-blue-600"><li>FYP Hunt</li></a>
     <li>/</li>
     <a href="{{ route('admin.user-list')}}" class="text-blue-600"><li>Manage User</li></a>
 @endsection

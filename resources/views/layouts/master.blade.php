@@ -13,11 +13,27 @@
 
     <title>@yield('title', 'FYP Hunt')</title>
     @vite('resources/css/app.css')
+
+    <style>
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: calc(100% - 16rem);
+            /* Exclude sidebar width */
+            margin-left: 16rem;
+            /* Adjust to align with main content */
+            z-index: -1;
+            /* Send footer behind sidebar */
+            background-color: white;
+            /* Ensure visibility */
+        }
+    </style>
 </head>
 
 <body class="min-h-screen flex flex-col">
     <!-- Sidebar -->
-    <div class="w-64 shadow-lg fixed top-0 left-0 h-screen">
+    <div class="w-64 shadow-lg fixed top-0 left-0 h-screen z-10">
         @include('partials.sidebar')
     </div>
 
