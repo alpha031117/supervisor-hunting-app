@@ -23,24 +23,28 @@ class ManageAppointmentController extends Controller
     //     return view('ManageAppointment.ViewAppointmentStatus', compact('appointments'));
     // }
     public function listAppointments(Request $request)
-    {
-        $userId = Auth::id();
-        $now = Carbon::now()->timezone('Asia/Kuala_Lumpur');
-        
-        // Get tomorrow's date without time
-        $tomorrow = $now->copy()->addDay()->format('Y-m-d');
-        
-        // Fetch all appointments for pagination
-        $appointments = Appointment::where('student_id', $userId)
-            ->paginate(10);
-        
+{
+    $userId = Auth::id();
+    $now = Carbon::now()->timezone('Asia/Kuala_Lumpur');
+    
+    // Get tomorrow's date without time
+    $tomorrow = $now->copy()->addDay()->format('Y-m-d');
+    
+    // Fetch all appointments for pagination
+    $appointments = Appointment::where('student_id', $userId)
+        ->paginate(10);
+    
+    // Check if we've already shown the reminder for today
+    $reminderKey = 'reminder_shown_' . $userId . '_' . $now->format('Y-m-d');
+    
+    // Only proceed with reminder if we haven't shown it today
+    if (!session()->has($reminderKey)) {
         // Check for approved appointments scheduled for tomorrow
         $upcomingAppointments = Appointment::where('student_id', $userId)
             ->where('status', 'Approved')
             ->whereDate('appointment_date', $tomorrow)
             ->get();
         
-        // Generate and flash reminder message if appointments are found
         if ($upcomingAppointments->isNotEmpty()) {
             // Build the reminder message
             $reminderMessage = '<div class="text-left">';
@@ -65,12 +69,16 @@ class ManageAppointmentController extends Controller
             $reminderMessage .= '<div class="mt-3 text-gray-600">Please ensure you arrive on time.</div>';
             $reminderMessage .= '</div>';
             
-            // Store the reminder in the session without the reminderShown check
+            // Store the reminder in the session
             session()->flash('reminder', $reminderMessage);
+            
+            // Mark that we've shown the reminder today
+            session()->put($reminderKey, true);
         }
-        
-        return view('ManageAppointment.ViewAppointmentStatus', compact('appointments'));
     }
+    
+    return view('ManageAppointment.ViewAppointmentStatus', compact('appointments'));
+}
 
     
     /**
