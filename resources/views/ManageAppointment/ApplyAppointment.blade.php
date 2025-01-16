@@ -6,7 +6,7 @@
         <div class="p-6">
             <h2 class="text-2xl font-bold text-blue-600 mb-4">Request New Appointment</h2>
             <p class="text-gray-600">Complete the form to book an appointment with <strong>{{ $lecturer->name }}</strong>.</p>
-            
+
             <form id="appointmentForm" action="{{ route('appointments.store') }}" method="POST" class="mt-6">
                 @csrf
 
@@ -23,7 +23,7 @@
                             <p class="text-gray-500">Timetable file is available for viewing.</p>
                         </div>
                         <div>
-                            <a href="{{ asset('storage/' . $timetable->file_path) }}" target="_blank" 
+                            <a href="{{ asset('storage/' . $timetable->file_path) }}" target="_blank"
                                 class="inline-block bg-transparent text-blue-600 border border-blue-600 px-5 py-2 rounded-full hover:bg-blue-600 hover:text-white transition">
                                 View Timetable
                             </a>
@@ -43,8 +43,8 @@
 
                 <div class="mb-4">
                     <label for="room_no" class="block text-blue-600 font-bold mb-1">Room No</label>
-                    <input type="text" id="room_no" name="room_no" 
-                           class="w-full bg-gray-100 rounded-lg shadow-sm border-gray-300 focus:ring-blue-500 focus:border-blue-500" 
+                    <input type="text" id="room_no" name="room_no"
+                           class="w-full bg-gray-100 rounded-lg shadow-sm border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                            value="{{ $timetable->room_no ?? 'N/A' }}" readonly>
                 </div>
 
@@ -52,27 +52,27 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                     <div>
                         <label for="appointment_date" class="block text-blue-600 font-bold mb-1">Date</label>
-                        <input type="date" id="appointment_date" name="appointment_date" 
+                        <input type="date" id="appointment_date" name="appointment_date"
                                class="w-full rounded-lg shadow-sm border-gray-300 focus:ring-blue-500 focus:border-blue-500" required>
                     </div>
                     <div>
                         <label for="appointment_time" class="block text-blue-600 font-bold mb-1">Time</label>
-                        <input type="time" id="appointment_time" name="appointment_time" 
+                        <input type="time" id="appointment_time" name="appointment_time"
                                class="w-full rounded-lg shadow-sm border-gray-300 focus:ring-blue-500 focus:border-blue-500" required>
                     </div>
                 </div>
 
                 <div class="mb-4">
                     <label for="lecturer_name" class="block text-blue-600 font-bold mb-1">Lecturer Name</label>
-                    <input type="text" id="lecturer_name" name="lecturer_name" 
-                           class="w-full bg-gray-100 rounded-lg shadow-sm border-gray-300 focus:ring-blue-500 focus:border-blue-500" 
+                    <input type="text" id="lecturer_name" name="lecturer_name"
+                           class="w-full bg-gray-100 rounded-lg shadow-sm border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                            value="{{ $lecturer->name }}" readonly required>
                 </div>
 
                 <div class="mb-4">
                     <label for="appointment_type" class="block text-blue-600 font-bold mb-1">Reason</label>
-                    <input type="text" id="appointment_type" name="appointment_type" 
-                           class="w-full rounded-lg shadow-sm border-gray-300 focus:ring-blue-500 focus:border-blue-500" 
+                    <input type="text" id="appointment_type" name="appointment_type"
+                           class="w-full rounded-lg shadow-sm border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                            placeholder="Enter the reason for the appointment" required>
                 </div>
 
@@ -81,12 +81,12 @@
 
                 <!-- Submit and Back Buttons -->
                 <div class="flex justify-between items-center mt-6">
-                    <button type="submit" 
+                    <button type="submit"
                             class="bg-blue-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-800 transition">
                         Save
                     </button>
-                    
-                    <a href="{{ route('search') }}" 
+
+                    <a href="{{ route('search') }}"
                        class="text-blue-600 border border-blue-600 px-6 py-3 rounded-full hover:bg-blue-600 hover:text-white transition">
                         Back
                     </a>

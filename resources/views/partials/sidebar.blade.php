@@ -63,7 +63,20 @@
 
             @if ($role === 'student')
                 <li>
-                    <a href="#"
+                    <a href="/notification"
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <!-- Replace the previous icon with a bell icon -->
+                        <x-heroicon-s-bell
+                            class="w-7 h-7 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                        <span class="ms-3 text-gray-500 dark:text-gray-400 group-hover:text-gray-900">
+                            Notification</span>
+                    </a>
+                </li>
+            @endif
+
+            @if ($role === 'student')
+                <li>
+                    <a href="/ProposalList"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <x-iconoir-graduation-cap-solid
                             class="w-7 h-7 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
@@ -73,7 +86,7 @@
                 </li>
             @elseif ($role === 'lecturer')
                 <li>
-                    <a href="#"
+                    <a href="/ApplicationList"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <x-iconoir-graduation-cap-solid
                             class="w-7 h-7 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
