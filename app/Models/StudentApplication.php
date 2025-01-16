@@ -16,7 +16,6 @@ class StudentApplication extends Model
         'lecturer_quota_id',
         'proposal_id',
         'proposal_title',
-        'proposal_description',
         'student_title',
         'student_description',
         'remarks',

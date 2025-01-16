@@ -34,18 +34,7 @@ class ManageTitleController extends Controller
 
     public function Applysvandtitle($id)
     {
-        // Get the current logged-in student
-        $student = Auth::user();
 
-        // Check if the student already has an accepted application
-        $existingApplication = StudentApplication::where('student_id', $student->id)
-            ->where('status', 'Accepted') // Check if the status is 'Accepted'
-            ->first();
-
-        // If the student already has an accepted application, prevent applying
-        if ($existingApplication) {
-            return redirect('ProposalList')->with('error', 'You already have a supervisor assigned.');
-        }
 
         // Find the proposal by ID
         $proposal = Proposal::findOrFail($id);
@@ -57,7 +46,7 @@ class ManageTitleController extends Controller
         if ($lecturerQuota) {
             // Create a new student application
             $application = StudentApplication::create([
-                'student_id' => $student->id,
+                'student_id' => Auth::id(),
                 'student_title' => $proposal->proposal_title,
                 'student_description' => $proposal->proposal_description,
                 'lecturer_id' => $proposal->lecturer_id,
@@ -80,6 +69,7 @@ class ManageTitleController extends Controller
     }
 
 
+
     public function CreateApplication($lecturerId)
     {
         // Fetch the lecturer details
@@ -91,18 +81,7 @@ class ManageTitleController extends Controller
 
     public function SubmitApplication(Request $request)
     {
-        // Get the current logged-in student
-        $student = Auth::user();
 
-        // Check if the student already has an accepted application
-        $existingApplication = StudentApplication::where('student_id', $student->id)
-            ->where('status', 'Accepted') // Check if the status is 'Accepted'
-            ->first();
-
-        // If the student already has an accepted application, prevent applying
-        if ($existingApplication) {
-            return redirect('ProposalList')->with('error', 'You already have a supervisor assigned.');
-        }
 
         // Validate form input
         $request->validate([
@@ -111,8 +90,7 @@ class ManageTitleController extends Controller
             'project_description' => 'required|string',
         ]);
 
-        // Get the current student
-        $student = Auth::user();
+
 
         // Find the lecturer's quota
         $lecturerQuota = LecturerQuota::where('lecturer_id', $request->lecturer_id)->first();
@@ -120,8 +98,8 @@ class ManageTitleController extends Controller
         // Check if the lecturer has a quota
         if ($lecturerQuota) {
             // Create the student application
-            $application = StudentApplication::create([
-                'student_id' => $student->id,
+            StudentApplication::create([
+                'student_id' => Auth::id(),
                 'lecturer_id' => $request->lecturer_id,
                 'student_title' => $request->project_title,
                 'student_description' => $request->project_description,
@@ -205,35 +183,39 @@ class ManageTitleController extends Controller
 
     private function AcceptApplication($application, $remarks)
     {
-        // Update application status
-        $application->status = 'Accepted';
-        $application->remarks = $remarks;
-        $application->decision_date = now();
-        $application->save();
 
-        // Update proposal status to "Taken"
-        if ($application->proposal) {
-            $application->proposal->status = 'Taken';
-            $application->proposal->save();
+            // Update application status
+            $application->status = 'Accepted';
+            $application->remarks = $remarks;
+            $application->decision_date = now();
+            $application->save();
+
+            // Update proposal status to "Taken"
+            if ($application->proposal) {
+                $application->proposal->status = 'Taken';
+                $application->proposal->save();
+            }
+
+            // Decrease lecturer quota by 1 (if applicable)
+            if ($application->lecturerQuota) {
+                $application->lecturerQuota->remaining_quota -= 1;
+                $application->lecturerQuota->save();
+            }
+
+            // Write to notification model
+            Notification::create([
+                'user_id' => $application->student_id,
+                'title' => 'Application Accepted',
+                'content' => 'Your application for the project "' . $application->proposal_title . '" has been accepted.',
+                'status' => 'unread' // Assuming the status should be "unread"
+            ]);
+
+            return redirect('/ApplicationList')
+                ->with('success', 'Application accepted successfully.');
         }
-
-        // Decrease lecturer quota by 1 (if applicable)
-        if ($application->lecturerQuota) {
-            $application->lecturerQuota->remaining_quota -= 1;
-            $application->lecturerQuota->save();
-        }
-
-        // Write to notification model
-        Notification::create([
-            'user_id' => $application->student_id,
-            'title' => 'Application Accepted',
-            'content' => 'Your application for the project "' . $application->proposal_title . '" has been accepted.',
-            'status' => 'unread' // Assuming the status should be "unread"
-        ]);
-
-        return redirect('/ApplicationList')
-            ->with('success', 'Application accepted successfully.');
+       
     }
+
 
     private function RejectApplication($application, $remarks)
     {
@@ -267,11 +249,11 @@ class ManageTitleController extends Controller
 
     public function PostProposal()
     {
-        // Get the current logged-in lecturer
-        $lecturer = Auth::user();
+        // Get the current logged-in lecturer's ID
+        $lecturerId = Auth::id();
 
         // Check the lecturer's remaining quota
-        $lecturerQuota = LecturerQuota::where('lecturer_id', $lecturer->id)->first();
+        $lecturerQuota = LecturerQuota::where('lecturer_id', $lecturerId)->first();
 
         if ($lecturerQuota && $lecturerQuota->remaining_quota <= 0) {
             // Redirect to ProposalList with a failure message
