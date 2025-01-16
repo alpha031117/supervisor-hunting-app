@@ -153,10 +153,16 @@
             modal.classList.toggle('hidden');
         }
 
+        // function closeReminderModal() {
+        //     const modal = document.getElementById('reminderModal');
+        //     if (modal) {
+        //         modal.style.display = 'none';
+        //     }
+        // }
         function closeReminderModal() {
             const modal = document.getElementById('reminderModal');
             if (modal) {
-                modal.style.display = 'none';
+                modal.remove();
             }
         }
     </script>

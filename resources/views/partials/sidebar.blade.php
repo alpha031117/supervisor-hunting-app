@@ -99,7 +99,7 @@
                     aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
                     <x-mdi-timetable
                         class="w-7 h-7 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-500 dark:group-hover:text-white" />
-                    <span class="ms-3 text-gray-500 dark:text-gray-400 group-hover:text-gray-900">Timetable</span>
+                    <span class="ms-3 text-gray-500 dark:text-gray-400 group-hover:text-gray-900">Appointment</span>
                 </button>
                 <ul id="dropdown-example" class="{{ $isDropdownOpen ? 'block' : 'hidden' }} py-2 space-y-2 ml-1">
                     @if ($role === 'student')
