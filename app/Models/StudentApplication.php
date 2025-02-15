@@ -9,15 +9,16 @@ class StudentApplication extends Model
 {
     use HasFactory;
 
+
     protected $fillable = [
         'student_id',
         'lecturer_id',
         'lecturer_quota_id',
         'proposal_id',
         'proposal_title',
-        'proposal_description',
         'student_title',
         'student_description',
+        'remarks',
         'status',
         'decision_date',
     ];
@@ -54,4 +55,3 @@ class StudentApplication extends Model
         return $this->belongsTo(Proposal::class, 'proposal_id');
     }
 }
-

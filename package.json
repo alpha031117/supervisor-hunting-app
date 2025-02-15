@@ -19,6 +19,8 @@
         "vite": "^6.0.5"
     },
     "dependencies": {
+        "@heroicons/react": "^2.2.0",
+        "@heroicons/vue": "^2.2.0",
         "laravel-mix": "^6.0.49"
     }
 }

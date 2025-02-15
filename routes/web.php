@@ -5,6 +5,8 @@ use App\Http\Controllers\ManageUser\AuthenticatedSessionController;
 use App\Http\Controllers\ManageUser\ManageUserController;
 use App\Http\Controllers\ManageAppointment\ManageAppointmentController;
 use App\Http\Controllers\ManageTimeframeAndQuota\TimeframeController;
+use App\Http\Controllers\ManageTitle\ManageTitleController;
+use App\Http\Controllers\ManageTitle\NotificationController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -104,7 +106,7 @@ Route::middleware('auth')->group(function () {
             ->name('save-lecturer-quota');
 
         Route::get('/admin/quota-data', [QuotaController::class, 'getQuotaData'])
-            ->name('lecturer-quota-report');
+            ->name('lecturer-quota-data');
 
         Route::get('/lecturer-quota-report', [QuotaController::class, 'displayQuotaReport'])
             ->name('lecturer-quota-report');
@@ -113,15 +115,16 @@ Route::middleware('auth')->group(function () {
             ->name('delete-timeframe');
     });
 
+
+
     // Lecturer
-    Route::middleware('checkrole:lecturer')->get('/lecturer-dashboard', function () {
-        return view('lecturerDashboard');
-    })->name('lecturer.dashboard');
+    Route::middleware('checkrole:lecturer')->get('/lecturer-dashboard', [ManageTitleController::class, 'DisplayLecturerProposals'])->name('lecturer.dashboard');
+
 
     // Student
-    Route::middleware('checkrole:student')->get('/student-dashboard', function () {
-        return view('studentDashboard');
-    })->name('student.dashboard');
+    Route::middleware('checkrole:student')->get('/notification', [NotificationController::class, 'SendNotification']);
+
+    Route::middleware('checkrole:student')->get('/student-dashboard', [ManageTitleController::class, 'DisplayStudentApplications'])->name('student.dashboard');
 });
 
 // Login
@@ -137,8 +140,27 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->name('auth.logout');
 
 // Route to display the lecturer quota list
-Route::get('/lecturer-quota-list', [QuotaController::class, 'displayLecturerQuota'])
-    ->name('lecturer-quota-list');
+Route::get('/lecturer-quota-list', [QuotaController::class, 'displayLecturerQuota'])->name('lecturer-quota-list');
 
-Route::get('/filter-lecturer-quota', [QuotaController::class, 'filterBySemester'])
-    ->name('filter-lecturer-quota');
+Route::get('/filter-lecturer-quota', [QuotaController::class, 'filterBySemester'])->name('filter-lecturer-quota');
+
+
+Route::get('/ProposalList', [ManageTitleController::class, 'DisplayProposalList'])->middleware('checkrole:student');
+
+Route::get('/proposal/{id}', [ManageTitleController::class, 'DisplayProposalDetail'])->middleware('checkrole:student');
+
+Route::get('/applyproposal/{id}', [ManageTitleController::class, 'Applysvandtitle'])->middleware('checkrole:student');
+
+Route::get('/createapplication/{id}', [ManageTitleController::class, 'CreateApplication'])->middleware('checkrole:student');
+
+Route::post('/submitapplication', [ManageTitleController::class, 'SubmitApplication'])->middleware('checkrole:student');
+
+Route::get('/ApplicationList', [ManageTitleController::class, 'DisplayApplicationList'])->middleware('checkrole:lecturer');
+
+Route::get('/application/{id}', [ManageTitleController::class, 'DisplayApplicationDetail'])->middleware('checkrole:lecturer');
+
+Route::put('/submitresponse/{id}', [ManageTitleController::class, 'handleResponse'])->middleware('checkrole:lecturer');
+
+Route::get('/PostProposal', [ManageTitleController::class, 'PostProposal'])->middleware('checkrole:lecturer');
+
+Route::post('/submitproposal', [ManageTitleController::class, 'SubmitProposal'])->middleware('checkrole:lecturer');

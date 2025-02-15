@@ -22,18 +22,18 @@
                 <!-- Name Display -->
                 <div class="mb-6">
                     <label for="name" class="block text-lg font-bold mb-2 text-blue-600">Your Name</label>
-                    <input type="text" id="name" 
-                           class="w-full bg-blue-50 border-2 border-blue-600 rounded-lg shadow-sm px-4 py-3 text-blue-600 font-semibold" 
-                           value="{{ auth()->user()->name }}" 
+                    <input type="text" id="name"
+                           class="w-full bg-blue-50 border-2 border-blue-600 rounded-lg shadow-sm px-4 py-3 text-blue-600 font-semibold"
+                           value="{{ auth()->user()->name }}"
                            disabled>
                 </div>
 
                 <!-- Room Number Input -->
                 <div class="mb-6">
                     <label for="room_no" class="block text-lg font-bold mb-2 text-blue-600">Room No</label>
-                    <input type="text" id="room_no" name="room_no" 
-                           class="w-full bg-blue-50 border-2 border-blue-600 rounded-lg shadow-sm px-4 py-3 text-blue-600 font-semibold @error('room_no') border-red-500 @enderror" 
-                           value="{{ old('room_no', $timetable->room_no ?? '') }}" 
+                    <input type="text" id="room_no" name="room_no"
+                           class="w-full bg-blue-50 border-2 border-blue-600 rounded-lg shadow-sm px-4 py-3 text-blue-600 font-semibold @error('room_no') border-red-500 @enderror"
+                           value="{{ old('room_no', $timetable->room_no ?? '') }}"
                            required>
                     @error('room_no')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -49,8 +49,8 @@
                         <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-center justify-between text-blue-600 shadow-sm">
                             <span>
                                 <strong>Current File:</strong>
-                                <a href="{{ asset('storage/' . $timetable->file_path) }}" 
-                                   target="_blank" 
+                                <a href="{{ asset('storage/' . $timetable->file_path) }}"
+                                   target="_blank"
                                    class="underline font-bold hover:text-blue-600">
                                     {{ basename($timetable->file_path) }}
                                 </a>
@@ -78,7 +78,7 @@
 
                 <!-- Submit Button -->
                 <div class="text-center mt-8">
-                    <button type="submit" 
+                    <button type="submit"
                             class="bg-blue-600 to-blue-600 text-white font-bold px-10 py-3 rounded-full shadow-lg hover:scale-105 transition transform duration-300">
                         Submit
                     </button>

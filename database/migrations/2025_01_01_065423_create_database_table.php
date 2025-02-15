@@ -43,7 +43,7 @@ return new class extends Migration
                 ->constrained('research_groups')
                 ->nullOnDelete();
             $table->boolean('first_login')->default(true);
-            $table->string('role')->default('student'); 
+            $table->string('role')->default('student');
             $table->timestamps();
             $table->rememberToken();
         });
@@ -92,13 +92,12 @@ return new class extends Migration
             $table->foreignId('lecturer_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('lecturer_quota_id')->constrained('lecturer_quotas')->cascadeOnDelete();
             $table->foreignId('proposal_id')->nullable()->constrained('proposals')->nullOnDelete();
-
-            $table->string('proposal_title');
-            $table->text('proposal_description');
+            $table->string('proposal_title')->nullable();
             $table->string('student_title');
-            $table->text('student_description')->nullable();
+            $table->text('student_description');
+            $table->text('remarks')->nullable()->default(null);
             $table->enum('status', ['Pending', 'Accepted', 'Rejected'])->default('Pending');
-            $table->timestamp('decision_date')->nullable();
+            $table->timestamp('decision_date')->nullable()->default(null);
             $table->timestamps();
         });
 

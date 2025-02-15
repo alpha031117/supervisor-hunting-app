@@ -14,14 +14,14 @@
         <div class="w-full max-w-2xl">
             <div class="bg-white shadow-md rounded-full px-6 py-4">
                 <form id="searchForm" action="{{ route('search') }}" method="GET" class="flex space-x-4">
-                    <input 
-                        type="text" 
-                        name="search" 
+                    <input
+                        type="text"
+                        name="search"
                         class="flex-1 rounded-full border-gray-300 shadow-sm focus:ring focus:ring-blue-200 focus:outline-none px-5 py-2 text-sm"
-                        placeholder="Search by Lecturer Name" 
+                        placeholder="Search by Lecturer Name"
                         value="{{ $search }}">
-                    <button 
-                        type="submit" 
+                    <button
+                        type="submit"
                         class="text-white font-semibold rounded-full px-6 py-2 text-sm hover:shadow-lg transition bg-blue-600">
                         Search
                     </button>
@@ -52,8 +52,8 @@
                                     <td class="px-6 py-3 font-medium">{{ $lecturer->name }}</td>
                                     <td class="px-6 py-3">{{ $lecturer->email }}</td>
                                     <td class="px-6 py-3 text-center">
-                                        <a 
-                                            href="{{ route('applyappointment.create', ['lecturer' => $lecturer->id]) }}" 
+                                        <a
+                                            href="{{ route('applyappointment.create', ['lecturer' => $lecturer->id]) }}"
                                             class="inline-block text-white text-sm font-semibold rounded-full px-4 py-2 hover:shadow-md transition bg-blue-600">
                                             Book Appointment
                                         </a>
