@@ -22,7 +22,7 @@
 
            <!-- My Post Proposal Button -->
            <div class="mb-4 flex justify-end">
-            <a href="/postproposal"
+            <a href="/PostProposal"
                 class="px-8 py-2 text-white bg-blue-700 shadow-lg hover:bg-blue-800 rounded-lg transition duration-300">
                 Post Proposal
             </a>

@@ -161,6 +161,6 @@ Route::get('/application/{id}', [ManageTitleController::class, 'DisplayApplicati
 
 Route::put('/submitresponse/{id}', [ManageTitleController::class, 'handleResponse'])->middleware('checkrole:lecturer');
 
-Route::get('/postproposal', [ManageTitleController::class, 'PostProposal'])->middleware('checkrole:lecturer');
+Route::get('/PostProposal', [ManageTitleController::class, 'PostProposal'])->middleware('checkrole:lecturer');
 
 Route::post('/submitproposal', [ManageTitleController::class, 'SubmitProposal'])->middleware('checkrole:lecturer');

@@ -11,7 +11,7 @@
         <li>Student Application List</li>
     </a>
     <li>/</li>
-    <a href="/postproposal" class="text-blue-600">
+    <a href="/PostProposal" class="text-blue-600">
         <li>Post Proposal</li>
     </a>
 @endsection

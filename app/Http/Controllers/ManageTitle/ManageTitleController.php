@@ -184,36 +184,34 @@ class ManageTitleController extends Controller
     private function AcceptApplication($application, $remarks)
     {
 
-            // Update application status
-            $application->status = 'Accepted';
-            $application->remarks = $remarks;
-            $application->decision_date = now();
-            $application->save();
+        // Update application status
+        $application->status = 'Accepted';
+        $application->remarks = $remarks;
+        $application->decision_date = now();
+        $application->save();
 
-            // Update proposal status to "Taken"
-            if ($application->proposal) {
-                $application->proposal->status = 'Taken';
-                $application->proposal->save();
-            }
-
-            // Decrease lecturer quota by 1 (if applicable)
-            if ($application->lecturerQuota) {
-                $application->lecturerQuota->remaining_quota -= 1;
-                $application->lecturerQuota->save();
-            }
-
-            // Write to notification model
-            Notification::create([
-                'user_id' => $application->student_id,
-                'title' => 'Application Accepted',
-                'content' => 'Your application for the project "' . $application->proposal_title . '" has been accepted.',
-                'status' => 'unread' // Assuming the status should be "unread"
-            ]);
-
-            return redirect('/ApplicationList')
-                ->with('success', 'Application accepted successfully.');
+        // Update proposal status to "Taken"
+        if ($application->proposal) {
+            $application->proposal->status = 'Taken';
+            $application->proposal->save();
         }
-       
+
+        // Decrease lecturer quota by 1 (if applicable)
+        if ($application->lecturerQuota) {
+            $application->lecturerQuota->remaining_quota -= 1;
+            $application->lecturerQuota->save();
+        }
+
+        // Write to notification model
+        Notification::create([
+            'user_id' => $application->student_id,
+            'title' => 'Application Accepted',
+            'content' => 'Your application for the project "' . $application->proposal_title . '" has been accepted.',
+            'status' => 'unread' // Assuming the status should be "unread"
+        ]);
+
+        return redirect('/ApplicationList')
+            ->with('success', 'Application accepted successfully.');
     }
 
 
@@ -257,7 +255,7 @@ class ManageTitleController extends Controller
 
         if ($lecturerQuota && $lecturerQuota->remaining_quota <= 0) {
             // Redirect to ProposalList with a failure message
-            return redirect('/ProposalList')->with('error', 'You have no quota left to post a proposal.');
+            redirect('/ProposalList')->with('error', 'You have no quota left to post a proposal.');
         }
 
         // If quota is available, show the proposal posting page
